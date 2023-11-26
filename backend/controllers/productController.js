@@ -128,7 +128,6 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     rating: Number(rating),
     comment,
   };
-
   const product = await Product.findById(productId);
 
   const isReviewed = product.reviews.find(

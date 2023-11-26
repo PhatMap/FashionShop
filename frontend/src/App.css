@@ -582,7 +582,7 @@ footer {
 #sidebar {
   min-width: 100%;
   max-width: 100%;
-  background: #232f3e;
+  background: #333333;
   color: #fff;
   transition: all 0.3s;
 }

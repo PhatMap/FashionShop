@@ -1,5 +1,35 @@
 [
   {
+    "_id": {
+      "$oid": "655fd11810d75b7e7ffca2d1"
+    },
+    "name": "Bàn Ăn Gỗ Cao Su MOHO OSLO 901",
+    "price": 324,
+    "description": "Kích thước: Dài 1m4 x Rộng 75cm x Cao 73cm\n\nChất liệu:\n\n- Mặt bàn: Gỗ công nghiệp MDF chuẩn CARB-P2 (*), Veneer gỗ cao su tự nhiên\n\n- Chân bàn: Gỗ cao su tự nhiên\n\n(*) Tiêu chuẩn California Air Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho sức khỏe\n\nChống thấm, cong vênh, trầy xước, mối mọt",
+    "ratings": 0,
+    "images": [
+      {
+        "public_id": "products/u9czlxknjjsvexvl4iyw",
+        "url": "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1700778265/products/u9czlxknjjsvexvl4iyw.png",
+        "_id": {
+          "$oid": "655fd11810d75b7e7ffca2d2"
+        }
+      }
+    ],
+    "category": "Table",
+    "seller": "Tran Trung Phat",
+    "stock": 12,
+    "numOfReviews": 0,
+    "user": {
+      "$oid": "655cde6dfc7ae86a4a8c4951"
+    },
+    "reviews": [],
+    "createAt": {
+      "$date": "2023-11-23T22:24:24.078Z"
+    },
+    "__v": 0
+  },
+  {
     "name": "Flan",
     "price": 20.0,
     "description": "Yum Yum",

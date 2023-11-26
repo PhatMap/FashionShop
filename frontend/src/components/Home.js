@@ -10,6 +10,7 @@ import { getProducts } from "../actions/productActions";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css"; // Don't forget to import the styles
 import { useParams } from "react-router-dom";
+import ProductCarousel from "./layout/Carousel";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,6 +61,7 @@ const Home = () => {
   return (
     <Fragment>
       <ToastContainer />
+
       {loading ? (
         <Loader />
       ) : (

@@ -47,6 +47,7 @@ import axios from "axios";
 // Payment
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import ProductCarousel from "./components/layout/Carousel";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -75,6 +76,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
+
         <div className="container container-fluid">
           <Routes>
             <Route path="/" Component={Home} exact />

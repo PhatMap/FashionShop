@@ -23,47 +23,15 @@ const Footer = () => {
             </ul>
           </div>
           <div className="col-md-6 col-lg-3 mb-4 mb-md-0">
-            <h2 className="footer-heading">Menu</h2>
-            <ul className="list-unstyled footer-list">
-              <li>
-                <a href="#">Shop</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Journal</a>
-              </li>
-              <li>
-                <a href="#">Contact Us</a>
-              </li>
-            </ul>
+            <h2 className="footer-heading">Shipping</h2>
+            <p>Free shipping</p>
           </div>
           <div className="col-md-6 col-lg-3 mb-4 mb-md-0">
-            <h2 className="footer-heading">Help</h2>
-            <ul className="list-unstyled footer-list">
-              <li>
-                <a href="#">Shipping Information</a>
-              </li>
-              <li>
-                <a href="#">Returns & Exchange</a>
-              </li>
-              <li>
-                <a href="#">Terms & Conditions</a>
-              </li>
-              <li>
-                <a href="#">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#">FAQs</a>
-              </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
-            </ul>
+            <h2 className="footer-heading">Refund policy</h2>
+            <p>All product can be refund within 3 days</p>
           </div>
           <div className="col-md-6 col-lg-3">
-            <h2 className="footer-heading">About us</h2>
+            <h2 className="footer-heading">Contact</h2>
             <ul className="list-unstyled footer-list">
               <li>
                 <span className="icon icon-map-marker"></span>
@@ -71,11 +39,11 @@ const Footer = () => {
               </li>
               <li>
                 <span className="icon icon-phone"></span>
-                <span className="text">+84 0556 3702</span>
+                <span className="text">+84 123456</span>
               </li>
               <li>
                 <span className="icon icon-envelope"></span>
-                <span className="text">phattaiprokute@gmail.com</span>
+                <span className="text">phatmap234@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -85,7 +53,7 @@ const Footer = () => {
             <p className="footer-text">
               DecoNest &copy; 2023. All Rights Reserved.
             </p>
-          </div> 
+          </div>
         </div>
       </div>
     </footer>
