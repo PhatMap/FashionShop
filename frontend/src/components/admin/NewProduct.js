@@ -14,20 +14,13 @@ const NewProduct = () => {
   const history = useNavigate();
 
   const [name, setName] = useState("");
-  // const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  // const [stock, setStock] = useState(0);
-  // const [seller, setSeller] = useState("");
+  const [stock, setStock] = useState(0);
+  const [seller, setSeller] = useState("");
 
-  // const [name, setName] = useState("Test");
-  const [price, setPrice] = useState(
-    Math.floor(Math.random() * (1000 - 1) + 1)
-  );
-  // const [description, setDescription] = useState("a");
-  // const [category, setCategory] = useState("Table");
-  const [stock, setStock] = useState(15);
-  const [seller, setSeller] = useState("Tran Trung Phat");
+
 
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);

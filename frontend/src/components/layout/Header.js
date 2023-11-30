@@ -84,7 +84,7 @@ const Header = () => {
                 color: "white",
               }}
             >
-              {cartItems.length}
+              {user ? cartItems.length : 0}
             </span>
           </Link>
 
