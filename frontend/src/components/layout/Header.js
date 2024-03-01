@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaBars } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,14 +8,24 @@ import { logout } from "../../actions/userActions";
 import Search from "./Search";
 import "../../App.css";
 import { getProductsByCategory } from "../../actions/productActions";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const Header = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const dispatch = useDispatch();
   const history = useNavigate();
 
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
 
   const logoutHandler = () => {
@@ -33,14 +43,17 @@ const Header = () => {
   };
 
   const getCategory = (category) => {
-    setIsMenuOpen(false);
+    setAnchorEl(false);
     history(`/category/${category}`);
     dispatch(getProductsByCategory(category));
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  useEffect(() => {
+    console.log("Component updated");
+    return () => {
+      console.log("Cleanup");
+    };
+  }, []);
 
   return (
     <Fragment>
@@ -52,17 +65,40 @@ const Header = () => {
               <img src="/images/a.png" alt="No logo" />
             </Link>
           </div>
+
           <button
-            className="menu-btn "
-            onClick={toggleMenu}
-            id="dropDownMenuButton"
-            data-toggle="dropdown"
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded="false"
-            style={{ background: "none", border: "none" }}
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+            className="menu-button"
           >
             <FaBars style={{ fontSize: "30px", color: "#333" }} /> Category
           </button>
+          <Menu
+          
+            className="menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {categories.map((category, index) => (
+              <MenuItem>
+                <Link
+                  className="dropdown-item text-danger"
+                  to={`/category/${category}`}
+                  onClick={() => getCategory(category)}
+                  key={index}
+                >
+                  {category}
+                </Link>
+              </MenuItem>
+            ))}
+          </Menu>
         </div>
         <div className="col-12 col-md-6 mt-2 mt-md-0">
           <Search />
@@ -142,20 +178,6 @@ const Header = () => {
           )}
         </div>
       </nav>
-      {isMenuOpen && (
-        <div className="menu">
-          {categories.map((category, index) => (
-            <Link
-              className="dropdown-item text-danger"
-              to={`/category/${category}`}
-              onClick={() => getCategory(category)}
-              key={index}
-            >
-              {category}
-            </Link>
-          ))}
-        </div>
-      )}
     </Fragment>
   );
 };
