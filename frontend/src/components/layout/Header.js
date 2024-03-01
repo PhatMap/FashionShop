@@ -22,7 +22,6 @@ const Header = () => {
   };
 
   const dispatch = useDispatch();
-  const history = useNavigate();
 
   const { user, loading } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
@@ -41,19 +40,6 @@ const Header = () => {
     });
     dispatch(logout());
   };
-
-  const getCategory = (category) => {
-    setAnchorEl(false);
-    history(`/category/${category}`);
-    dispatch(getProductsByCategory(category));
-  };
-
-  useEffect(() => {
-    console.log("Component updated");
-    return () => {
-      console.log("Cleanup");
-    };
-  }, []);
 
   return (
     <Fragment>
@@ -77,7 +63,6 @@ const Header = () => {
             <FaBars style={{ fontSize: "30px", color: "#333" }} /> Category
           </button>
           <Menu
-          
             className="menu"
             anchorEl={anchorEl}
             open={open}
@@ -86,15 +71,16 @@ const Header = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            {categories.map((category, index) => (
-              <MenuItem>
+            {categories.map((cate, index) => (
+              <MenuItem key={index}>
                 <Link
                   className="dropdown-item text-danger"
-                  to={`/category/${category}`}
-                  onClick={() => getCategory(category)}
-                  key={index}
+                  to={`/category/${cate}`}
+                  onClick={() => {
+                    setAnchorEl(false);
+                  }}
                 >
-                  {category}
+                  {cate}
                 </Link>
               </MenuItem>
             ))}

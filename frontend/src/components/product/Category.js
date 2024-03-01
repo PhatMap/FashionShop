@@ -11,6 +11,7 @@ import "rc-slider/assets/index.css"; // Don't forget to import the styles
 import { useParams } from "react-router-dom";
 import Footer from "../layout/Footer";
 import { getProducts } from "../../actions/productActions";
+import { getProductsByCategory } from "../../actions/productActions";
 
 const Category = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,7 +31,6 @@ const Category = () => {
     filteredProductsCount,
   } = useSelector((state) => state.category);
 
-
   const { keyword, category } = useParams();
 
   function setCurrentPageNo(pageNumber) {
@@ -41,6 +41,24 @@ const Category = () => {
   if (keyword) {
     count = filteredProductsCount;
   }
+
+  useEffect(() => {
+    dispatch(
+      getProductsByCategory(keyword, currentPage, price, category, rating)
+    );
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }, [dispatch, keyword, currentPage, price, category, rating, error]);
 
   return (
     <Fragment>

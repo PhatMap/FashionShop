@@ -15,10 +15,7 @@ import ProductCarousel from "./layout/Carousel";
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([1, 1000]);
-  const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
-
-  const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
 
   const dispatch = useDispatch();
 
@@ -34,7 +31,7 @@ const Home = () => {
   const { keyword } = useParams();
 
   useEffect(() => {
-    dispatch(getProducts(keyword, currentPage, price, category, rating));
+    dispatch(getProducts(keyword, currentPage, price, rating));
     if (error) {
       toast.error(error, {
         position: "top-center",
@@ -47,7 +44,7 @@ const Home = () => {
         theme: "light",
       });
     }
-  }, [dispatch, keyword, currentPage, price, category, rating, error]);
+  }, [dispatch, keyword, currentPage, price, rating, error]);
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -109,25 +106,6 @@ const Home = () => {
                       />
 
                       <hr className="my-5" />
-
-                      <div className="mt-5">
-                        <h4 className="mb-3">Categories</h4>
-
-                        <ul className="pl-0">
-                          {categories.map((category) => (
-                            <li
-                              style={{
-                                cursor: "pointer",
-                                listStyleType: "none",
-                              }}
-                              key={category}
-                              onClick={() => setCategory(category)}
-                            >
-                              {category}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
 
                       <hr className="my-3" />
 
