@@ -5,6 +5,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
 import Home from "./components/Home";
+import Shop from "./components/Shop";
 import ProductDetails from "./components/product/ProductDetails";
 
 // Cart Imports
@@ -55,18 +56,18 @@ function App() {
   useEffect(() => {
     store.dispatch(loadUser());
 
-  async function getStripeApiKey() {
-    try {
-      const { data } = await axios.get("/api/v1/stripeapi");
-      setStripeApiKey(data.stripeApiKey);
-    } catch (error) {
-      if (error.response.status === 401) {
-        console.log("User not authenticated");
-      } else {
-        console.error("Error fetching Stripe API key:", error.message);
+    async function getStripeApiKey() {
+      try {
+        const { data } = await axios.get("/api/v1/stripeapi");
+        setStripeApiKey(data.stripeApiKey);
+      } catch (error) {
+        if (error.response.status === 401) {
+          console.log("User not authenticated");
+        } else {
+          console.error("Error fetching Stripe API key:", error.message);
+        }
       }
-    } 
-  }
+    }
     getStripeApiKey();
   }, []);
 
@@ -79,12 +80,13 @@ function App() {
 
         <div className="container container-fluid">
           <Routes>
-            <Route path="/" Component={Home} exact />
-            <Route path="/search/:keyword" Component={Home} />
-            <Route path="/product/:id" Component={ProductDetails} exact />
-            <Route path="/category/:category" Component={Category} exact />
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} /> {/* Thêm đường dẫn cho trang Shop */}
+            <Route path="/search/:keyword" element={<Shop />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/category/:category" element={<Category />} />
 
-            <Route path="/cart" Component={Cart} />
+            <Route path="/cart" element={<Cart />} />
             <Route
               path="/shipping"
               element={<ProtectedRoute component={Shipping} />}
@@ -102,40 +104,36 @@ function App() {
               element={
                 stripeApiKey && (
                   <Elements stripe={loadStripe(stripeApiKey)}>
-                    <ProtectedRoute component={Payment} exact />
+                    <ProtectedRoute component={Payment} />
                   </Elements>
                 )
               }
             />
 
-            <Route path="/login" Component={Login} />
-            <Route path="/register" Component={Register} />
-            <Route path="/password/forgot" Component={ForgotPassword} exact />
-            <Route
-              path="/password/reset/:token"
-              Component={NewPassword}
-              exact
-            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/password/forgot" element={<ForgotPassword />} />
+            <Route path="/password/reset/:token" element={<NewPassword />} />
             <Route
               path="/me"
-              element={<ProtectedRoute component={Profile} exact />}
+              element={<ProtectedRoute component={Profile} />}
             />
             <Route
               path="/me/update"
-              element={<ProtectedRoute component={UpdateProfile} exact />}
+              element={<ProtectedRoute component={UpdateProfile} />}
             />
             <Route
               path="/password/update"
-              element={<ProtectedRoute component={UpdatePassword} exact />}
+              element={<ProtectedRoute component={UpdatePassword} />}
             />
 
             <Route
               path="/orders/me"
-              element={<ProtectedRoute component={ListOrders} exact />}
+              element={<ProtectedRoute component={ListOrders} />}
             />
             <Route
               path="/order/:id"
-              element={<ProtectedRoute component={OrderDetails} exact />}
+              element={<ProtectedRoute component={OrderDetails} />}
             />
           </Routes>
         </div>
@@ -144,60 +142,60 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute isAdmin={true} component={Dashboard} exact />
+              <ProtectedRoute isAdmin={true} component={Dashboard} />
             }
           />
           <Route
             path="/admin/products"
             element={
-              <ProtectedRoute isAdmin={true} component={ProductsList} exact />
+              <ProtectedRoute isAdmin={true} component={ProductsList} />
             }
           />
           <Route
             path="/admin/product"
             element={
-              <ProtectedRoute isAdmin={true} component={NewProduct} exact />
+              <ProtectedRoute isAdmin={true} component={NewProduct} />
             }
           />
           <Route
             path="/admin/product/:id"
             element={
-              <ProtectedRoute isAdmin={true} component={UpdateProduct} exact />
+              <ProtectedRoute isAdmin={true} component={UpdateProduct} />
             }
           />
           <Route
             path="/admin/orders"
             element={
-              <ProtectedRoute isAdmin={true} component={OrdersList} exact />
+              <ProtectedRoute isAdmin={true} component={OrdersList} />
             }
           />
           <Route
             path="/admin/order/:id"
             element={
-              <ProtectedRoute isAdmin={true} component={ProcessOrder} exact />
+              <ProtectedRoute isAdmin={true} component={ProcessOrder} />
             }
           />
           <Route
             path="/admin/users"
-            element={
-              <ProtectedRoute isAdmin={true} component={UsersList} exact />
-            }
+            element={<ProtectedRoute isAdmin={true} component={UsersList} />}
           />
           <Route
             path="/admin/user/:id"
             element={
-              <ProtectedRoute isAdmin={true} component={UpdateUser} exact />
+              <ProtectedRoute isAdmin={true} component={UpdateUser} />
             }
           />
           <Route
             path="/admin/reviews"
             element={
-              <ProtectedRoute isAdmin={true} component={ProductReviews} exact />
+              <ProtectedRoute isAdmin={true} component={ProductReviews} />
             }
           />
         </Routes>
 
-        {!loading && (!isAuthenticated || user.role !== "admin") && <Footer />}
+        {!loading && (!isAuthenticated || user.role !== "admin") && (
+          <Footer />
+        )}
       </div>
     </Router>
   );

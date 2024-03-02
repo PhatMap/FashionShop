@@ -91,6 +91,13 @@ const Header = () => {
         </div>
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
+        
+        
+          {/* Nút Shop */}
+          <Link to="/shop" style={{ textDecoration: "none" }} className="btn btn-black">
+            Shop
+          </Link>
+
           <Link to="/cart" style={{ textDecoration: "none" }}>
             <FaShoppingCart
               className="ml-3"

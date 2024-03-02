@@ -4,6 +4,22 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("cloudinary");
 
+const Product = require("../models/product");
+
+exports.getTopRatedProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find().sort({ ratings: -1 }).limit(4);
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
   let images = [];
   if (typeof req.body.images === "string") {
