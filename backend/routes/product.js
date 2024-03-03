@@ -28,7 +28,7 @@ router.route("/products").get(getProducts);
 router.route("/products/:category").get(getProductsByCategory);
 router.route("/product/:id").get(getSingleProduct);
 router.route("/admin/products").get(getAdminProducts);
-router.route("/products/toprated").get(getTopRatedProducts);
+
 
 
 router.route("/review").put(isAuthenticatedUser, createProductReview);

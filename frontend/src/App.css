@@ -26,12 +26,23 @@ body {
 }
 
 nav {
-  background: #e6d3b3;
+  background: #dfbc80;
   padding: 1rem 1rem;
 }
 
 #remove_btn {
   background-color: white;
+}
+
+.shop_button {
+  color: #e90f0f; /* Thay đổi màu chữ của nút Shop */
+  margin-left: -40%;
+  font-size: 18px;
+}
+
+.logo-container {
+  margin-right: 15%; 
+  margin-left: 25%; 
 }
 
 #search_btn {
@@ -43,7 +54,7 @@ nav {
 
 .input-group {
   width: 90%;
-  margin-right: 35%;
+  margin-left: 0%;
 }
 
 #search_field {
@@ -71,14 +82,14 @@ nav {
 
 #cart {
   font-size: 1rem;
-  color: white;
+  color: rgb(229, 161, 33);
 }
 
 #cart_count {
-  background-color: #febd69;
+  background-color: #22e432;
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
-  color: black;
+  color: rgb(219, 207, 74);
   font-weight: bold;
   font-size: 0.9rem;
 }
@@ -235,7 +246,7 @@ footer {
 #cart_btn,
 #review_btn {
   border-radius: 2rem;
-  background-color: #fa9c23;
+  background-color: #20aa20;
   border: none;
   padding: 0.5rem 2rem;
 }
@@ -336,7 +347,7 @@ footer {
 }
 
 #card_item_price {
-  color: #febd69;
+  color: #ebd92f;
   font-weight: bold;
   font-size: 1.4rem;
 }
@@ -440,6 +451,14 @@ footer {
   outline: 0;
   box-shadow: none;
 }
+
+
+
+
+
+
+
+
 
 /* Header User Profile */
 

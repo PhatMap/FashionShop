@@ -48,7 +48,7 @@ import axios from "axios";
 // Payment
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import ProductCarousel from "./components/layout/Carousel";
+
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");

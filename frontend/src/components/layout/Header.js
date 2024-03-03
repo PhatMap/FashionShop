@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { logout } from "../../actions/userActions";
 import Search from "./Search";
 import "../../App.css";
-import { getProductsByCategory } from "../../actions/productActions";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -46,7 +45,7 @@ const Header = () => {
       <ToastContainer />
       <nav className="navbar row">
         <div className="col-12 col-md-3 ">
-          <div className="navbar-brand">
+          <div className="navbar-brand logo-container">
             <Link to="/">
               <img src="/images/a.png" alt="No logo" />
             </Link>
@@ -94,7 +93,7 @@ const Header = () => {
         
         
           {/* Nút Shop */}
-          <Link to="/shop" style={{ textDecoration: "none" }} className="btn btn-black">
+          <Link to="/shop" style={{ textDecoration: "none" }} className="btn shop_button">
             Shop
           </Link>
 
