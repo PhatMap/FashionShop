@@ -30,6 +30,7 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
@@ -81,7 +82,17 @@ const ProductDetails = () => {
   }, [dispatch, error, id, reviewError, success]);
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity));
+    let newQty = quantity;
+    for (let i = 0; i < cartItems.length; i++) {
+      if (id === cartItems[i].product) {
+        newQty = cartItems[i].quantity + newQty;
+        if (newQty > product.stock) {
+          return;
+        }
+        break;
+      }
+    }
+    dispatch(addItemToCart(id, newQty));
     toast.success("Item Added to Cart", {
       position: "top-center",
       autoClose: 5000,
