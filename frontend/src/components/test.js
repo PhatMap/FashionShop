@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getProducts } from "../actions/productActions";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams } from "react-router-dom";
 import ProductCarousel from "./layout/Carousel";
 
 const Shop = () => {
@@ -20,9 +20,6 @@ const Shop = () => {
   const [cols, setCols] = useState(4); // Số cột cho sản phẩm
 
   const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
-  
-  // Sử dụng hook useNavigate để thực hiện chuyển hướng
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -57,21 +54,17 @@ const Shop = () => {
     setCurrentPage(pageNumber);
   }
 
-  const handleCategoryClick = (selectedCategory) => {
-    // Thực hiện chuyển hướng đến trang Search với từ khóa là danh mục được chọn
-    navigate(`/category/${selectedCategory}`);
-  };
-
-  // Render danh sách sản phẩm
-  const renderProducts = () => {
-    return (
-      <div className="row">
-        {products.map((product) => (
-          <Product key={product._id} product={product} col={cols} className="product-item" />
-        ))}
-      </div>
-    );
-  };
+ // Thay đổi phần renderProducts như sau:
+// Render danh sách sản phẩm
+const renderProducts = () => {
+  return (
+    <div className="row">
+      {products.map((product) => (
+        <Product key={product._id} product={product} col={cols} className="product-item" />
+      ))}
+    </div>
+  );
+};
 
   // Nếu không tìm kiếm, hiển thị 4 sản phẩm 1 hàng
   const defaultProductsGrid = (
@@ -151,7 +144,7 @@ const Shop = () => {
                             marginBottom: '10px',
                           }}
                           key={category}
-                          onClick={() => handleCategoryClick(category)} // Sử dụng hàm handleCategoryClick khi nhấp vào danh mục
+                          onClick={() => setCategory(category)}
                         >
                           {category}
                         </li>

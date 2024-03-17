@@ -8,7 +8,7 @@ const Product = ({ product, col }) => {
         <Link
           to={`/product/${product._id}`}
         >
-          <img className="card-img-top mx-auto" src={product.images[0].url} />
+         <img className="card-img-top mx-auto" src={product.images[0].url} />
         </Link>
         <div className="card-body d-flex flex-column">
           <h5

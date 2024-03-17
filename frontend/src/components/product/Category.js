@@ -7,10 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Slider from "rc-slider";
-import "rc-slider/assets/index.css"; // Don't forget to import the styles
-import { useParams } from "react-router-dom";
+import "rc-slider/assets/index.css";
+import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../layout/Footer";
-import { getProducts } from "../../actions/productActions";
 import { getProductsByCategory } from "../../actions/productActions";
 
 const Category = () => {
@@ -18,34 +17,20 @@ const Category = () => {
   const [price, setPrice] = useState([1, 1000]);
   const [rating, setRating] = useState(0);
 
-  const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
-
   const dispatch = useDispatch();
 
-  const {
-    loading,
-    products,
-    error,
-    productsCount,
-    resPerPage,
-    filteredProductsCount,
-  } = useSelector((state) => state.category);
+  const { loading, products, error, productsCount, resPerPage, filteredProductsCount } = useSelector((state) => state.category);
+  const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
 
   const { keyword, category } = useParams();
+  const navigate = useNavigate();
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
 
-  let count = productsCount;
-  if (keyword) {
-    count = filteredProductsCount;
-  }
-
   useEffect(() => {
-    dispatch(
-      getProductsByCategory(keyword, currentPage, price, category, rating)
-    );
+    dispatch(getProductsByCategory(keyword, currentPage, price, category, rating));
     if (error) {
       toast.error(error, {
         position: "top-center",
@@ -60,6 +45,14 @@ const Category = () => {
     }
   }, [dispatch, keyword, currentPage, price, category, rating, error]);
 
+  const handleCategoryClick = (selectedCategory) => {
+    navigate(`/category/${selectedCategory}`);
+  };
+
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
   return (
     <Fragment>
       <ToastContainer />
@@ -73,7 +66,7 @@ const Category = () => {
             style={{
               fontSize: "24px",
               fontWeight: "bold",
-              color: "#333", // Choose a color that fits your design
+              color: "#333",
               textAlign: "center",
               textTransform: "uppercase",
               margin: "20px 0",
@@ -85,82 +78,72 @@ const Category = () => {
 
           <section id="products" className="container mt-5">
             <div className="row">
-              {keyword ? (
-                <Fragment>
-                  <div className="col-6 col-md-3 mt-5 mb-5">
-                    <div className="px-5">
-                      <Slider
-                        marks={{
-                          1: `$1`,
-                          1000: `$1000`,
-                        }}
-                        min={1}
-                        max={1000}
-                        defaultValue={[1, 1000]}
-                        tipFormatter={(values) =>
-                          values.map((value) => `$${value}`)
-                        }
-                        tipProps={{
-                          placement: "top",
-                          visible: true,
-                        }}
-                        range // Set range to true for a double-range slider
-                        value={price}
-                        onChange={(price) => setPrice(price)}
-                      />
+              <div className="col-md-3"  style={{ marginRight: '-150px' }}>
+                <div className="px-2"style={{ width: "200px", marginLeft: '-140px' }}>
+                  <Slider
+                    marks={{ 1: "$1", 1000: "$1000" }}
+                    min={1}
+                    max={1000}
+                    defaultValue={[1, 1000]}
+                    tipFormatter={(values) => values.map((value) => `$${value}`)}
+                    tipProps={{ placement: "top", visible: true }}
+                    range
+                    value={price}
+                    onChange={(price) => setPrice(price)}
+                  />
 
-                      <hr className="my-5" />
-
-                      <div className="mt-5">
-                        <h4 className="mb-3">Categories</h4>
-                      </div>
-
-                      <hr className="my-3" />
-
-                      <div className="mt-5">
-                        <h4 className="mb-3">Ratings</h4>
-
-                        <ul className="pl-0">
-                          {[5, 4, 3, 2, 1].map((star) => (
-                            <li
-                              style={{
-                                cursor: "pointer",
-                                listStyleType: "none",
-                              }}
-                              key={star}
-                              onClick={() => setRating(star)}
-                            >
-                              <div className="rating-outer">
-                                <div
-                                  className="rating-inner"
-                                  style={{
-                                    width: `${star * 20}%`,
-                                  }}
-                                ></div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-6 col-md-9">
-                    <div className="row">
-                      {products.map((product) => (
-                        <Product key={product._id} product={product} col={4} />
+                  <div className="mt-4">
+                  <h4 className="mb-3" style={{ marginLeft: '5px', marginBottom: '10px' }}>Categories</h4>
+                    <ul className="list-unstyled">
+                      {categories.map((cate, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleCategoryClick(cate)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {cate}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
-                </Fragment>
-              ) : (
-                products.map((product) => (
-                  <Product key={product._id} product={product} col={3} />
-                ))
-              )}
+
+                  <div className="mt-5">
+                      <h4 className="mb-3">Ratings</h4>
+                      <ul className="pl-0">
+                        {[5, 4, 3, 2, 1].map((star) => (
+                          <li
+                            style={{
+                              cursor: "pointer",
+                              listStyleType: "none",
+                            }}
+                            key={star}
+                            onClick={() => setRating(star)}
+                          >
+                            <div className="rating-outer">
+                              <div
+                                className="rating-inner"
+                                style={{
+                                  width: `${star * 20}%`,
+                                }}
+                              ></div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                </div>
+              </div>
+
+              <div className="col-md-9">
+                <div className="row">
+                  {products.map((product) => (
+                    <Product key={product._id} product={product} col={4} />
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
-          {resPerPage <= count && (
+          {resPerPage <= productsCount && (
             <div className="d-flex justify-content-center mt-5">
               <Pagination
                 activePage={currentPage}

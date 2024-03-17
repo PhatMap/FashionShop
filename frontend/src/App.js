@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer";
 
 import Home from "./components/Home";
 import Shop from "./components/Shop";
+
 import ProductDetails from "./components/product/ProductDetails";
 
 // Cart Imports
@@ -49,7 +50,6 @@ import axios from "axios";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
 
@@ -82,7 +82,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} /> {/* Thêm đường dẫn cho trang Shop */}
-            <Route path="/search/:keyword" element={<Shop />} />
+            <Route path="/search/:keyword" element={<Shop/>} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/category/:category" element={<Category />} />
 
