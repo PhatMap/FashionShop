@@ -15,20 +15,19 @@ const Cart = () => {
     dispatch(removeItemFromCart(id));
   };
 
-  const increaseQty = (id, quantity, stock) => {
+  const increaseQty = (id, quantity, stock, size, color) => {
     const newQty = quantity + 1;
 
     if (newQty > stock) return;
-
-    dispatch(addItemToCart(id, newQty));
+    dispatch(addItemToCart(id, newQty, size, color));
   };
 
-  const decreaseQty = (id, quantity) => {
+  const decreaseQty = (id, quantity, size, color) => {
     const newQty = quantity - 1;
 
     if (newQty <= 0) return;
 
-    dispatch(addItemToCart(id, newQty));
+    dispatch(addItemToCart(id, newQty, size, color));
   };
 
   const checkoutHandler = () => {
@@ -87,7 +86,12 @@ const Cart = () => {
                             <span
                               className="btn btn-danger minus"
                               onClick={() =>
-                                decreaseQty(item.product, item.quantity)
+                                decreaseQty(
+                                  item.product,
+                                  item.quantity,
+                                  item.size,
+                                  item.color
+                                )
                               }
                             >
                               -
@@ -106,7 +110,9 @@ const Cart = () => {
                                 increaseQty(
                                   item.product,
                                   item.quantity,
-                                  item.stock
+                                  item.stock,
+                                  item.size,
+                                  item.color
                                 )
                               }
                             >
