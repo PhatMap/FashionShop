@@ -19,18 +19,21 @@ const UpdateProduct = () => {
   const { id } = useParams();
 
   const [name, setName] = useState("");
-  const [color, setColor]= useState("");
+  const [color, setColor] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
   const [seller, setSeller] = useState("");
   const [images, setImages] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [size, setSize] = useState("");
 
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories =  ["", "Trousers","Shirt","Dress","Shoe","Belt",];
+  const categories = ["", "Trousers", "Shirt", "Dress", "Shoe", "Belt"];
+  const sizeType = ["", "XS", "S", "M", "L", "XL", "XXL"];
 
   const dispatch = useDispatch();
 
@@ -44,62 +47,72 @@ const UpdateProduct = () => {
   const productId = id;
 
   useEffect(() => {
-    if (product && product._id !== productId) {
-      dispatch(getProductDetails(productId));
-    } else {
-      setName(product.name);
-      setColor(product.color);
-      setPrice(product.price);
-      setDescription(product.description);
-      setCategory(product.category);
-      setSeller(product.seller);
-      setStock(product.stock);
-      setOldImages(product.images);
-    }
+      if (!product || (product && product._id !== productId) || isUpdated) {
+        dispatch(getProductDetails(productId));
+      } else {
+        setName(product.name);
+        setColor(product.color);
+        setPrice(product.price);
+        setDescription(product.description);
+        setCategory(product.category);
+        setSeller(product.seller);
+        setStock(product.stock);
+        setOldImages(product.images);
+        setSizes(product.sizes);
+      }
 
-    if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      dispatch(clearErrors());
-    }
+      if (error) {
+        toast.error(error, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(clearErrors());
+      }
 
-    if (updateError) {
-      toast.error(updateError, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      dispatch(clearErrors());
-    }
+      if (updateError) {
+        toast.error(updateError, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(clearErrors());
+      }
 
-    if (isUpdated) {
-      history("/admin/products");
-      toast.success("Product updated successfully", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      dispatch({ type: UPDATE_PRODUCT_RESET });
+      if (isUpdated) {
+        history("/admin/products");
+        toast.success("Product updated successfully", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch({ type: UPDATE_PRODUCT_RESET });
+      }
+  }, [dispatch, error, isUpdated, updateError, product, productId]);
+
+  const addSize = () => {
+    for (let i = 0; i < sizes.length; i++) {
+      if (sizes[i] === size) {
+        return;
+      }
     }
-  }, [dispatch, error, isUpdated, history, updateError, product, productId]);
+    setSizes((oldArray) => [...oldArray, size]);
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -107,10 +120,15 @@ const UpdateProduct = () => {
     const formData = new FormData();
     formData.set("name", name);
     formData.set("price", price);
+    formData.set("color", color);
     formData.set("description", description);
     formData.set("category", category);
     formData.set("stock", stock);
     formData.set("seller", seller);
+
+    sizes.forEach((size, index) => {
+      formData.append(`sizes[${index}]`, size);
+    });
 
     images.forEach((image) => {
       formData.append("images", image);
@@ -201,6 +219,33 @@ const UpdateProduct = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="sizes_field">Sizes</label>
+                  <p>
+                    Here
+                    {sizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </p>
+                  <select
+                    className="form-control"
+                    id="sizes_field"
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                  >
+                    {sizeType.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                  <button type="button" onClick={addSize}>
+                    Add
+                  </button>
                 </div>
 
                 <div className="form-group">

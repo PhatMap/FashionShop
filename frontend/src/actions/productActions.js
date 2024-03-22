@@ -36,18 +36,18 @@ import {
 } from "../constants/productConstants";
 
 export const getProducts =
-  (keyword = "", currentPage = 1, price, rating=0) =>
+  (keyword = "", currentPage = 1, price, rating = 0) =>
   async (dispatch) => {
     try {
       dispatch({ type: ALL_PRODUCTS_REQUEST });
 
       let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
       const { data } = await axios.get(link, config);
 
       dispatch({
@@ -63,32 +63,32 @@ export const getProducts =
     }
   };
 
-  export const getProductsByCategory =
-    (keyword = "", currentPage = 1, price,category, rating = 0) =>
-    async (dispatch) => {
-      try {
-        dispatch({ type: PRODUCTS_BY_CATEGORY_REQUEST });
-        let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
+export const getProductsByCategory =
+  (keyword = "", currentPage = 1, price, category, rating = 0) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCTS_BY_CATEGORY_REQUEST });
+      let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.get(link, config);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(link, config);
 
-        dispatch({
-          type: PRODUCTS_BY_CATEGORY_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: PRODUCTS_BY_CATEGORY_FAIL,
-          payload: error.response.data.message,
-        });
-        throw error;
-      }
-    };
+      dispatch({
+        type: PRODUCTS_BY_CATEGORY_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCTS_BY_CATEGORY_FAIL,
+        payload: error.response.data.message,
+      });
+      throw error;
+    }
+  };
 
 export const newProduct = (productData) => async (dispatch) => {
   try {
@@ -113,7 +113,7 @@ export const newProduct = (productData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: NEW_PRODUCT_FAIL,
-      payload: error.response.data.message, 
+      payload: error.response.data.message,
     });
   }
 };
@@ -153,10 +153,12 @@ export const updateProduct = (id, productData) => async (dispatch) => {
       productData,
       config
     );
-
     dispatch({
       type: UPDATE_PRODUCT_SUCCESS,
-      payload: data.success,
+      payload: {
+        success: data.success,
+        product: data.product,
+      },
     });
   } catch (error) {
     dispatch({

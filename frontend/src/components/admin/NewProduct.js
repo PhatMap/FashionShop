@@ -14,20 +14,20 @@ const NewProduct = () => {
   const history = useNavigate();
 
   const [name, setName] = useState("");
-  const [color, setColor]= useState("");
+  const [color, setColor] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
+  const [sizes, setSizes] = useState([]);
+  const [size, setSize] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
   const [seller, setSeller] = useState("");
 
-
-
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories = [ "","Trousers","Shirt", "Dress", "Shoe","Belt",];
-
+  const categories = ["", "Trousers", "Shirt", "Dress", "Shoe", "Belt"];
+  const sizeType = ["", "XS", "S", "M", "L", "XL", "XXL"];
   const dispatch = useDispatch();
 
   const { loading, error, success } = useSelector((state) => state.newProduct);
@@ -63,6 +63,15 @@ const NewProduct = () => {
     }
   }, [dispatch, error, success, history]);
 
+  const addSize = () => {
+    for (let i = 0; i < sizes.length; i++) {
+      if (sizes[i] === size) {
+        return;
+      }
+    }
+    setSizes((oldArray) => [...oldArray, size]);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -74,6 +83,10 @@ const NewProduct = () => {
     formData.set("category", category);
     formData.set("stock", stock);
     formData.set("seller", seller);
+    
+    sizes.forEach((size, index) => {
+      formData.append(`sizes[${index}]`, size);
+    });
 
     images.forEach((image) => {
       formData.append("images", image);
@@ -131,7 +144,7 @@ const NewProduct = () => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="color_field">Color</label>
                   <input
@@ -154,7 +167,6 @@ const NewProduct = () => {
                   />
                 </div>
 
-
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>
                   <textarea
@@ -164,6 +176,33 @@ const NewProduct = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="sizes_field">Sizes</label>
+                  <p>
+                    Here
+                    {sizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </p>
+                  <select
+                    className="form-control"
+                    id="sizes_field"
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                  >
+                    {sizeType.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                  <button type="button" onClick={addSize}>
+                    Add
+                  </button>
                 </div>
 
                 <div className="form-group">

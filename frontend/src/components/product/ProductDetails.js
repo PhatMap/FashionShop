@@ -20,9 +20,13 @@ import { useParams } from "react-router-dom";
 const ProductDetails = () => {
   const { id } = useParams();
 
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -81,6 +85,26 @@ const ProductDetails = () => {
     }
   }, [dispatch, error, id, reviewError, success]);
 
+    const setTheColor = (color) => {
+      if (color === selectedColor) {
+        setSelectedColor(null);
+        setColor(null);
+        return;
+      }
+      setSelectedColor(color);
+      setColor(color);
+    };
+
+  const setTheSize = (size) => {
+    if(size === selectedSize) {
+      setSelectedSize(null);
+      setSize(null);
+      return;
+    }
+    setSelectedSize(size);
+    setSize(size);
+  }
+
   const addToCart = () => {
     let newQty = quantity;
     for (let i = 0; i < cartItems.length; i++) {
@@ -92,7 +116,7 @@ const ProductDetails = () => {
         break;
       }
     }
-    dispatch(addItemToCart(id, newQty));
+    dispatch(addItemToCart(id, newQty, size, color));
     toast.success("Item Added to Cart", {
       position: "top-center",
       autoClose: 5000,
@@ -210,14 +234,45 @@ const ProductDetails = () => {
               <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
 
               <hr />
-   {/* Hiển thị màu sắc */}
-   <p>
-                <strong>Color:</strong> {product.color}
-              </p>
+              {/* Hiển thị màu sắc */}
+              <div className="mt-5">
+                <h4 className="mb-3">Available Sizes</h4>
+                {product &&
+                  product.color &&
+                  ["White", "Black", "Blue", "Red"].map((color, index) => (
+                    <button
+                      key={index}
+                      className={`color-button ${
+                        color === selectedColor ? "selected" : ""
+                      }`}
+                      onClick={() => setTheColor(color)}
+                    >
+                      {color}
+                    </button>
+                  ))}
+              </div>
+              {/* Hiển thị size */}
+              <div className="mt-5">
+                <h4 className="mb-3">Available Sizes</h4>
+                {product &&
+                  product.sizes &&
+                  product.sizes.map((size, index) => (
+                    <button
+                      key={index}
+                      className={`size-button ${
+                        size === selectedSize ? "selected" : ""
+                      }`}
+                      onClick={() => setTheSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+              </div>
 
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   {/* Di chuyển giá vào đây để đặt cùng hàng với Add to Cart */}
+                  <hr />
                   <p id="product_price">${product.price}</p>
                 </div>
 
@@ -241,7 +296,7 @@ const ProductDetails = () => {
                   type="button"
                   id="cart_btn"
                   className="btn btn-primary d-inline ml-4"
-                  disabled={product.stock === 0}
+                  disabled={product.stock === 0 || !color || !size}
                   onClick={addToCart}
                 >
                   Add to Cart

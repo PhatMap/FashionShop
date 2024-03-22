@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 
-
 const cookieParser = require("cookie-parser");
 const cloudinary = require("cloudinary");
 const bodyparser = require("body-parser");
@@ -12,15 +11,11 @@ const cors = require("cors");
 const errorMiddlewares = require("./middlewares/errors");
 
 dotenv.config({ path: "backend/config/config.env" });
-app.use(express.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-app.use(cookieParser());
-
 
 app.use(express.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 }, }));
+app.use(fileUpload());
 app.use(cors());
 
 cloudinary.config({

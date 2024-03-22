@@ -40,6 +40,21 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  sizes: [{
+    type: String,
+    required: false,
+    enum: {
+      values: [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+      ],
+      message: "Please select correct size for product",
+    },
+  }],
   category: {
     type: String,
     required: [true, "please select category for this product"],

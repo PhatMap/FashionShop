@@ -729,3 +729,21 @@ ul.CTAs a {
   font-size: 0.8rem;
   color: grey;
 }
+
+.size-button.selected {
+  background-color: black; 
+  color: white; 
+}
+
+.color-button.selected {
+  background-color: black; 
+  color: white; 
+}
+
+.size-button {
+  margin-right: 5mm; 
+}
+
+.color-button {
+  margin-right: 5mm; 
+}
