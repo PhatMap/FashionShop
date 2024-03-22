@@ -210,33 +210,43 @@ const ProductDetails = () => {
               <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
 
               <hr />
+   {/* Hiển thị màu sắc */}
+   <p>
+                <strong>Color:</strong> {product.color}
+              </p>
 
-              <p id="product_price">${product.price}</p>
-              <div className="stockCounter d-inline">
-                <span className="btn btn-danger minus" onClick={decreaseQty}>
-                  -
-                </span>
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  {/* Di chuyển giá vào đây để đặt cùng hàng với Add to Cart */}
+                  <p id="product_price">${product.price}</p>
+                </div>
 
-                <input
-                  type="number"
-                  className="form-control count d-inline"
-                  value={quantity}
-                  readOnly
-                />
+                <div className="stockCounter d-inline">
+                  <span className="btn btn-danger minus" onClick={decreaseQty}>
+                    -
+                  </span>
 
-                <span className="btn btn-primary plus" onClick={increaseQty}>
-                  +
-                </span>
+                  <input
+                    type="number"
+                    className="form-control count d-inline"
+                    value={quantity}
+                    readOnly
+                  />
+
+                  <span className="btn btn-primary plus" onClick={increaseQty}>
+                    +
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  id="cart_btn"
+                  className="btn btn-primary d-inline ml-4"
+                  disabled={product.stock === 0}
+                  onClick={addToCart}
+                >
+                  Add to Cart
+                </button>
               </div>
-              <button
-                type="button"
-                id="cart_btn"
-                className="btn btn-primary d-inline ml-4"
-                disabled={product.stock === 0}
-                onClick={addToCart}
-              >
-                Add to Cart
-              </button>
 
               <hr />
 

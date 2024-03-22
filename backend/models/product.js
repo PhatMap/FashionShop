@@ -7,6 +7,13 @@ const productSchema = new mongoose.Schema({
     trim: true,
     maxLength: [100, "Product name can not exceed 100 characters"],
   },
+  color: {
+    type: String,
+    required: [true, "please enter product color"],
+    trim: true,
+    maxLength: [100, "Product name can not exceed 100 characters"],
+  },
+
   price: {
     type: Number,
     required: [true, "please enter product price"],
@@ -38,12 +45,11 @@ const productSchema = new mongoose.Schema({
     required: [true, "please select category for this product"],
     enum: {
       values: [
-        "Table",
-        "Chair",
-        "Bed",
-        "Shelve",
-        "Cabinet",
-        "Light",
+        "Trousers",
+        "Shirt",
+        "Dress",
+        "Shoe",
+        "Belt",
       ],
       message: "Please select correct category for product",
     },

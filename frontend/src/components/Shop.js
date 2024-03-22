@@ -19,7 +19,7 @@ const Shop = () => {
   const [category, setCategory] = useState("");
   const [cols, setCols] = useState(4); // Số cột cho sản phẩm
 
-  const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
+  const categories = [  "Trousers","Shirt","Dress","Shoe","Belt",];
   
   // Sử dụng hook useNavigate để thực hiện chuyển hướng
   const navigate = useNavigate();

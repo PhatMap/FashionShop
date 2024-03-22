@@ -20,7 +20,12 @@ const Category = () => {
   const dispatch = useDispatch();
 
   const { loading, products, error, productsCount, resPerPage, filteredProductsCount } = useSelector((state) => state.category);
-  const categories = ["Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
+  const categories = [  
+          "Trousers",
+          "Shirt",
+          "Dress",
+          "Shoe",
+          "Belt",];
 
   const { keyword, category } = useParams();
   const navigate = useNavigate();

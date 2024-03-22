@@ -14,6 +14,7 @@ const NewProduct = () => {
   const history = useNavigate();
 
   const [name, setName] = useState("");
+  const [color, setColor]= useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -25,7 +26,7 @@ const NewProduct = () => {
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories = ["","Table", "Chair", "Bed", "Shelve", "Cabinet", "Light"];
+  const categories = [ "","Trousers","Shirt", "Dress", "Shoe","Belt",];
 
   const dispatch = useDispatch();
 
@@ -67,6 +68,7 @@ const NewProduct = () => {
 
     const formData = new FormData();
     formData.set("name", name);
+    formData.set("color", color);
     formData.set("price", price);
     formData.set("description", description);
     formData.set("category", category);
@@ -129,6 +131,17 @@ const NewProduct = () => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
+                
+                <div className="form-group">
+                  <label htmlFor="color_field">Color</label>
+                  <input
+                    type="text"
+                    id="color_field"
+                    className="form-control"
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                  />
+                </div>
 
                 <div className="form-group">
                   <label htmlFor="price_field">Price</label>
@@ -140,6 +153,7 @@ const NewProduct = () => {
                     onChange={(e) => setPrice(e.target.value)}
                   />
                 </div>
+
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>
