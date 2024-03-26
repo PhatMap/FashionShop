@@ -41,8 +41,8 @@ nav {
 }
 
 .logo-container {
-  margin-right: 15%; 
-  margin-left: 25%; 
+  margin-right: 15%;
+  margin-left: 25%;
 }
 
 #search_btn {
@@ -126,7 +126,6 @@ nav {
 .product-wrapper {
   min-height: 100vh;
 }
-
 
 .card {
   height: 100%;
@@ -452,14 +451,6 @@ footer {
   box-shadow: none;
 }
 
-
-
-
-
-
-
-
-
 /* Header User Profile */
 
 .avatar-nav {
@@ -731,19 +722,24 @@ ul.CTAs a {
 }
 
 .size-button.selected {
-  background-color: black; 
-  color: white; 
+  background-color: black;
+  color: white;
 }
 
 .color-button.selected {
-  background-color: black; 
-  color: white; 
+  background-color: black;
+  color: white;
 }
 
 .size-button {
-  margin-right: 5mm; 
+  margin-right: 5mm;
 }
 
 .color-button {
-  margin-right: 5mm; 
+  margin-right: 5mm;
+}
+
+.slider-price {
+  display: flex;
+  justify-content: space-between;
 }

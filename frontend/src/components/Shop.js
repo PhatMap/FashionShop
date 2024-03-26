@@ -19,8 +19,8 @@ const Shop = () => {
   const [category, setCategory] = useState("");
   const [cols, setCols] = useState(4); // Số cột cho sản phẩm
 
-  const categories = [  "Trousers","Shirt","Dress","Shoe","Belt",];
-  
+  const categories = ["Trousers", "Shirt", "Dress", "Shoe", "Belt"];
+
   // Sử dụng hook useNavigate để thực hiện chuyển hướng
   const navigate = useNavigate();
 
@@ -67,18 +67,19 @@ const Shop = () => {
     return (
       <div className="row">
         {products.map((product) => (
-          <Product key={product._id} product={product} col={cols} className="product-item" />
+          <Product
+            key={product._id}
+            product={product}
+            col={cols}
+            className="product-item"
+          />
         ))}
       </div>
     );
   };
 
   // Nếu không tìm kiếm, hiển thị 4 sản phẩm 1 hàng
-  const defaultProductsGrid = (
-    <div className="row">
-      {renderProducts()}
-    </div>
-  );
+  const defaultProductsGrid = <div className="row">{renderProducts()}</div>;
 
   // Kiểm tra nếu có từ khóa tìm kiếm
   const isSearchKeyword = keyword && keyword.trim() !== "";
@@ -117,14 +118,17 @@ const Shop = () => {
           </h1>
           <div className="container mt-5">
             <div className="row">
-              <div className="col-md-3" style={{ marginRight: '-150px' }}>
+              <div className="col-md-3" style={{ marginRight: "-150px" }}>
                 {/* Slider, Categories, and Ratings */}
-                <div className="px-2" style={{ width: "200px", marginLeft: '-140px' }}>
+                <div
+                  className="px-2"
+                  style={{ width: "200px", marginLeft: "-140px" }}
+                >
+                  <div className="slider-price">
+                    <p>${price[0]}</p>
+                    <p>${price[price.length - 1]}</p>
+                  </div>
                   <Slider
-                    marks={{
-                      1: `$1`,
-                      1000: `$1000`,
-                    }}
                     min={1}
                     max={1000}
                     defaultValue={[1, 1000]}
@@ -140,15 +144,23 @@ const Shop = () => {
                     onChange={(price) => setPrice(price)}
                   />
                   <hr className="my-5" />
-                  <div className="mt-5" style={{ textAlign: 'left', overflowX: 'auto' }}>
-                    <h4 className="mb-3" style={{ marginLeft: '5px', marginBottom: '10px' }}>Categories</h4>
-                    <ul className="pl-0" style={{ whiteSpace: 'nowrap' }}>
+                  <div
+                    className="mt-5"
+                    style={{ textAlign: "left", overflowX: "auto" }}
+                  >
+                    <h4
+                      className="mb-3"
+                      style={{ marginLeft: "5px", marginBottom: "10px" }}
+                    >
+                      Categories
+                    </h4>
+                    <ul className="pl-0" style={{ whiteSpace: "nowrap" }}>
                       {categories.map((category) => (
                         <li
                           style={{
                             cursor: "pointer",
-                            display: 'block',
-                            marginBottom: '10px',
+                            display: "block",
+                            marginBottom: "10px",
                           }}
                           key={category}
                           onClick={() => handleCategoryClick(category)} // Sử dụng hàm handleCategoryClick khi nhấp vào danh mục
@@ -187,9 +199,7 @@ const Shop = () => {
               </div>
               <div className="col-md-9">
                 {/* Products */}
-                <section id="products">
-                  {productsGrid}
-                </section>
+                <section id="products">{productsGrid}</section>
                 {resPerPage <= count && (
                   <div className="d-flex justify-content-center mt-5">
                     <Pagination

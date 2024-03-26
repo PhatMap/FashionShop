@@ -28,10 +28,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
-
 
   if (!email || !password) {
     return next(new ErrorHandler("Please enter email and passsword", 400));
@@ -39,13 +37,11 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
 
   const user = await User.findOne({ email }).select("+password");
 
-
   if (!user) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
 
   const isPasswordMatched = await user.comparePassword(password);
-
 
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid email or password", 401));
@@ -149,9 +145,19 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
+    avatar: {
+      public_id: result.public_id,
+      url: result.secure_url,
+    },
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {

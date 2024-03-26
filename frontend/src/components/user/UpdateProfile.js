@@ -77,7 +77,6 @@ const UpdateProfile = () => {
     formData.set("name", name);
     formData.set("email", email);
     formData.set("avatar", avatar);
-
     dispatch(updateProfile(formData));
   };
 
