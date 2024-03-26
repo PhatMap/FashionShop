@@ -27,7 +27,7 @@ const ProductDetails = () => {
   const [comment, setComment] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-
+  const [colorHex, setColorHex] = useState("");
   const dispatch = useDispatch();
 
   const { loading, error, product } = useSelector(
@@ -85,16 +85,16 @@ const ProductDetails = () => {
     }
   }, [dispatch, error, id, reviewError, success]);
 
-    const setTheColor = (color) => {
-      if (color === selectedColor) {
-        setSelectedColor(null);
-        setColor(null);
-        return;
-      }
-      setSelectedColor(color);
-      setColor(color);
-    };
-
+  const setTheColor = (color) => {
+    if (color === selectedColor) {
+      setSelectedColor(colorHex); // Here is the problem
+      setColor(null);
+      return;
+    }
+    setSelectedColor(color);
+    setColor(color);
+  };
+  
   const setTheSize = (size) => {
     if(size === selectedSize) {
       setSelectedSize(null);
@@ -233,23 +233,31 @@ const ProductDetails = () => {
               </div>
               <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
 
+              <h4 className="mt-2">Description:</h4>
+              <p>{product.description}</p>
+              <hr />    
               <hr />
-              {/* Hiển thị màu sắc */}
               <div className="mt-5">
-                <h4 className="mb-3">Available Sizes</h4>
-                {product &&
-                  product.color &&
-                  ["White", "Black", "Blue", "Red"].map((color, index) => (
-                    <button
-                      key={index}
-                      className={`color-button ${
-                        color === selectedColor ? "selected" : ""
-                      }`}
-                      onClick={() => setTheColor(color)}
-                    >
-                      {color}
-                    </button>
+                <h4 className="mb-3">Colors</h4>
+                <div className="d-flex flex-wrap">
+                  {product.colors && product.colors.map((color, index) => (
+                    <div key={index} className="mr-2 mb-2">
+                      <button 
+                        style={{ 
+                          backgroundColor: color.colorHex, 
+                          border: selectedColor === color.colorHex ? '2px solid #000' : '1px solid #ddd',
+                          height: '36px', 
+                          width: '36px', 
+                          borderRadius: '50%', 
+                          cursor: 'pointer'
+                        }} 
+                        onClick={() => setTheColor(color.colorHex)}>
+                        {/* Đánh dấu màu đã chọn */}
+                        {selectedColor === color.colorHex && <span style={{color: '#fff'}}>✓</span>}
+                      </button>
+                    </div>
                   ))}
+                </div>
               </div>
               {/* Hiển thị size */}
               <div className="mt-5">
@@ -317,9 +325,6 @@ const ProductDetails = () => {
 
               <hr />
 
-              <h4 className="mt-2">Description:</h4>
-              <p>{product.description}</p>
-              <hr />
               <p id="product_seller mb-3">
                 Sold by: <strong>{product.seller}</strong>
               </p>
