@@ -20,14 +20,12 @@ import { useParams } from "react-router-dom";
 const ProductDetails = () => {
   const { id } = useParams();
 
-  const [color, setColor] = useState("");
+  
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [colorHex, setColorHex] = useState("");
   const dispatch = useDispatch();
 
   const { loading, error, product } = useSelector(
@@ -85,16 +83,7 @@ const ProductDetails = () => {
     }
   }, [dispatch, error, id, reviewError, success]);
 
-  const setTheColor = (color) => {
-    if (color === selectedColor) {
-      setSelectedColor(colorHex); // Here is the problem
-      setColor(null);
-      return;
-    }
-    setSelectedColor(color);
-    setColor(color);
-  };
-  
+
   const setTheSize = (size) => {
     if(size === selectedSize) {
       setSelectedSize(null);
@@ -116,7 +105,7 @@ const ProductDetails = () => {
         break;
       }
     }
-    dispatch(addItemToCart(id, newQty, size, color));
+    dispatch(addItemToCart(id, newQty, size, product.colors.colorHex));
     toast.success("Item Added to Cart", {
       position: "top-center",
       autoClose: 5000,
@@ -128,6 +117,7 @@ const ProductDetails = () => {
       theme: "light",
     });
   };
+  
 
   const increaseQty = () => {
     const count = document.querySelector(".count");
@@ -237,28 +227,22 @@ const ProductDetails = () => {
               <p>{product.description}</p>
               <hr />    
               <hr />
-              <div className="mt-5">
-                <h4 className="mb-3">Colors</h4>
-                <div className="d-flex flex-wrap">
-                  {product.colors && product.colors.map((color, index) => (
-                    <div key={index} className="mr-2 mb-2">
-                      <button 
-                        style={{ 
-                          backgroundColor: color.colorHex, 
-                          border: selectedColor === color.colorHex ? '2px solid #000' : '1px solid #ddd',
-                          height: '36px', 
-                          width: '36px', 
-                          borderRadius: '50%', 
-                          cursor: 'pointer'
-                        }} 
-                        onClick={() => setTheColor(color.colorHex)}>
-                        {/* Đánh dấu màu đã chọn */}
-                        {selectedColor === color.colorHex && <span style={{color: '#fff'}}>✓</span>}
-                      </button>
-                    </div>
-                  ))}
-                </div>
+            
+                            <div className="mt-5 d-flex align-items-center">
+                <h4 style={{ margin: '0 10px 0 0' }}>Color:</h4>
+                <div style={{ 
+                  backgroundColor: product?.colors?.colorHex ?? 'transparent', 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '50%',
+                  marginRight: '10px'
+                }}></div>
+              
               </div>
+
+
+
+
               {/* Hiển thị size */}
               <div className="mt-5">
                 <h4 className="mb-3">Available Sizes</h4>
@@ -304,7 +288,7 @@ const ProductDetails = () => {
                   type="button"
                   id="cart_btn"
                   className="btn btn-primary d-inline ml-4"
-                  disabled={product.stock === 0 || !color || !size}
+                  disabled={product.stock === 0 || !size}
                   onClick={addToCart}
                 >
                   Add to Cart

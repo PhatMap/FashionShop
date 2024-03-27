@@ -14,10 +14,11 @@ const NewProduct = () => {
   const history = useNavigate();
   const [name, setName] = useState("");
   const [colorName, setColorName] = useState("");
-  const [selectedHex, setSelectedHex] = useState("");
+
 
   const [colorHex, setColorHex] = useState("");
-  const [colorsSelected, setColorsSelected] = useState([]);
+ 
+  
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [sizes, setSizes] = useState([]);
@@ -92,10 +93,8 @@ const NewProduct = () => {
     const formData = new FormData();
     formData.set("name", name);
 
-    colorsSelected.forEach((color, index) => {
-      formData.append(`colors[${index}][colorName]`, color.colorName);
-      formData.append(`colors[${index}][colorHex]`, color.colorHex);
-    });
+    formData.set("colors[colorName]", colorName);
+    formData.set("colors[colorHex]", colorHex);
     formData.set("price", price);
     formData.set("description", description);
     formData.set("category", category);
@@ -132,20 +131,6 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  const addColor = () => {
-    if (!colorName || !colorHex) {
-      alert("Vui lòng chọn tên và mã màu.");
-      return;
-    }
-  
-    // Thêm màu mới vào mảng colorsSelected
-    setColorsSelected(prevColors => [...prevColors, { colorName, colorHex }]);
-    
-    // Reset giá trị đã chọn để người dùng có thể thêm màu mới
-    setColorName("");
-    setColorHex("");
-  };
-  
   
 
   const handleColorNameChange = (e) => {
@@ -153,12 +138,8 @@ const NewProduct = () => {
     // Reset hex value when color name changes
     setColorHex("");
   };
-  const handleColorHexChange = (e) => {
-    setColorHex(e.target.value);
-  };
-  const removeColor = (indexToRemove) => {
-    setColorsSelected(colorsSelected.filter((_, index) => index !== indexToRemove));
-  };
+ 
+ 
 
 
   return (
@@ -209,51 +190,39 @@ const NewProduct = () => {
                 </div>
 
                   {colorName && (
-                    <div className="form-group">
-                      <label htmlFor="color_hex_field">Color Hex</label>
-                      <div id="color_hex_field" className="d-flex flex-wrap">
-                        {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
-                          <div key={index} 
-                              style={{ 
-                                backgroundColor: hex, 
-                                width: hex === selectedHex ? '32px' : '36px', 
-                                height: hex === selectedHex ? '32px' : '36px', 
-                                margin: '4px', 
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease' 
-                              }}
-                              onClick={() => {
-                                setColorHex(hex);
-                                setSelectedHex(hex); 
-                              }}>
-                          </div>
-                        ))}
-                      </div>
-                    </div>  
-                  )}
-
-                <div className="form-group">
-                  <button type="button" onClick={addColor}>Add Color</button>
-                </div>
-
-                {colorsSelected.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                    {colorsSelected.map((color, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{color.colorName}</div>
-                        <div style={{ 
-                          width: '20px', 
-                          height: '20px', 
-                          backgroundColor: color.colorHex, 
-                          border: '1px solid #ddd', 
-                          marginRight: '10px'
-                        }} />
-                        <div style={{ flex: '1' }}></div> {/* Phần tử trống để căn chỉnh */}
-                        <button onClick={() => removeColor(index)} style={{ cursor: 'pointer' }}>Xóa</button>
+                    <div id="color_hex_field" className="d-flex flex-wrap">
+                    {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
+                      <div key={index} 
+                          style={{ 
+                            backgroundColor: hex, 
+                            width: hex === colorHex ? '32px' : '36px', 
+                            height: hex === colorHex ? '32px' : '36px', 
+                            margin: '4px', 
+                            cursor: 'pointer',
+                            border: hex === colorHex ? '2px solid black' : 'none',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onClick={() => setColorHex(hex)}>
                       </div>
                     ))}
                   </div>
-                )}
+                  )}
+
+                    {colorName && colorHex && (
+                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{colorName}</div>
+                        <div style={{ 
+                          width: '20px', 
+                          height: '20px', 
+                          backgroundColor: colorHex, 
+                          border: '1px solid #ddd', 
+                          marginRight: '10px'
+                        }} />
+                      </div>
+                    </div>
+                  )}
+
 
 
 

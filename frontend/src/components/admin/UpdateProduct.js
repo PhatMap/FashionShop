@@ -22,7 +22,6 @@ const UpdateProduct = () => {
   
   const [colorName, setColorName] = useState("");
   const [colorHex, setColorHex] = useState("");
-  const [colorsSelected, setColorsSelected] = useState([]);
   
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -69,7 +68,7 @@ const UpdateProduct = () => {
         dispatch(getProductDetails(productId));
       } else {
         setName(product.name);
-        setColorsSelected(product.colors || []);
+ 
         setPrice(product.price);
         setDescription(product.description);
         setCategory(product.category);
@@ -139,10 +138,8 @@ const UpdateProduct = () => {
     const formData = new FormData();
     formData.set("name", name);
     formData.set("price", price);
-    colorsSelected.forEach((color, index) => {
-      formData.append(`colors[${index}][colorName]`, color.colorName);
-      formData.append(`colors[${index}][colorHex]`, color.colorHex);
-    });
+    formData.set("colors[colorName]", colorName);
+    formData.set("colors[colorHex]", colorHex);
     formData.set("description", description);
     formData.set("category", category);
     formData.set("stock", stock);
@@ -179,20 +176,8 @@ const UpdateProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  const addColor = () => {
-    if (!colorName || !colorHex) {
-      alert("Vui lòng chọn tên và mã màu.");
-      return;
-    }
-  
-    // Thêm màu mới vào mảng colorsSelected
-    setColorsSelected(prevColors => [...prevColors, { colorName, colorHex }]);
-    
-    // Reset giá trị đã chọn để người dùng có thể thêm màu mới
-    setColorName("");
-    setColorHex("");
-  };
-  
+
+
   
 
   const handleColorNameChange = (e) => {
@@ -200,13 +185,7 @@ const UpdateProduct = () => {
     // Reset hex value when color name changes
     setColorHex("");
   };
-  const handleColorHexChange = (e) => {
-    setColorHex(e.target.value);
-  };
-  const removeColor = (indexToRemove) => {
-    setColorsSelected(colorsSelected.filter((_, index) => index !== indexToRemove));
-  };
-  
+
 
 
   return (
@@ -240,58 +219,56 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                <label htmlFor="color_name_field">Color Name</label>
-                <select
-                  id="color_name_field"
-                  className="form-control"
-                  value={colorName}
-                  onChange={handleColorNameChange}
-                >
-                  <option value="">Select Color</option>
-                  {colors.map((color) => (
-                    <option key={color.colorName} value={color.colorName}>
-                      {color.colorName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-                {colorName && (
-                  <div className="form-group">
-                    <label htmlFor="color_hex_field">Color Hex</label>
-                    <div id="color_hex_field" className="d-flex flex-wrap">
-                      {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
-                        <div key={index} 
-                            style={{ backgroundColor: hex, width: '36px', height: '36px', margin: '4px', cursor: 'pointer' }}
-                            onClick={() => setColorHex(hex)}>
-                        </div>
-                      ))}
-                    </div>
-                  </div>  
-                )}
-
-                <div className="form-group">
-                  <button type="button" onClick={addColor}>Add Color</button>
+                  <label htmlFor="color_name_field">Color Name</label>
+                  <select
+                    id="color_name_field"
+                    className="form-control"
+                    value={colorName}
+                    onChange={handleColorNameChange}
+                  >
+                    <option value="">Select Color</option>
+                    {colors.map((color) => (
+                      <option key={color.colorName} value={color.colorName}>
+                        {color.colorName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                {colorsSelected.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                    {colorsSelected.map((color, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{color.colorName}</div>
-                        <div style={{ 
-                          width: '20px', 
-                          height: '20px', 
-                          backgroundColor: color.colorHex, 
-                          border: '1px solid #ddd', 
-                          marginRight: '10px'
-                        }} />
-                        <div style={{ flex: '1' }}></div> {/* Phần tử trống để căn chỉnh */}
-                        <button onClick={() => removeColor(index)} style={{ cursor: 'pointer' }}>Xóa</button>
+                  {colorName && (
+                    <div id="color_hex_field" className="d-flex flex-wrap">
+                    {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
+                      <div key={index} 
+                          style={{ 
+                            backgroundColor: hex, 
+                            width: hex === colorHex ? '32px' : '36px', 
+                            height: hex === colorHex ? '32px' : '36px', 
+                            margin: '4px', 
+                            cursor: 'pointer',
+                            border: hex === colorHex ? '2px solid black' : 'none',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onClick={() => setColorHex(hex)}>
                       </div>
                     ))}
                   </div>
-                )}
+                  )}
+
+                    {colorName && colorHex && (
+                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{colorName}</div>
+                        <div style={{ 
+                          width: '20px', 
+                          height: '20px', 
+                          backgroundColor: colorHex, 
+                          border: '1px solid #ddd', 
+                          marginRight: '10px'
+                        }} />
+                      </div>
+                    </div>
+                  )}
+               
 
 
                 <div className="form-group">

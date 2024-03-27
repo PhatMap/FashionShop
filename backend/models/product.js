@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
     trim: true,
     maxLength: [100, "Product name can not exceed 100 characters"],
   },
-  colors: [{
+  colors: {
     colorName: {
       type: String,
       required: [true, "please enter color name"],
@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
       type: String,
       required: [true, "please enter color hex"],
     },
-  }],
+  },
   
   price: {
     type: Number,
