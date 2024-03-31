@@ -18,7 +18,6 @@ const UpdateProfile = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
     "/images/default_avatar.jpg"
   );
@@ -27,6 +26,7 @@ const UpdateProfile = () => {
 
   const { user } = useSelector((state) => state.auth);
   const { error, isUpdated, loading } = useSelector((state) => state.user);
+  const [avatar, setAvatar] = useState(user.avatar.url);
 
   useEffect(() => {
     if (user) {

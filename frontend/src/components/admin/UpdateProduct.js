@@ -18,11 +18,11 @@ const UpdateProduct = () => {
   const history = useNavigate();
   const { id } = useParams();
 
-  const [name, setName] = useState(""); 
-  
+  const [name, setName] = useState("");
+
   const [colorName, setColorName] = useState("");
   const [colorHex, setColorHex] = useState("");
-  
+
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -52,7 +52,6 @@ const UpdateProduct = () => {
     { colorName: "gray", colorHex: ["#808080", "#A9A9A9", "#C0C0C0"] },
     // Add other colors as needed
   ];
-  
 
   const { error, product } = useSelector((state) => state.productDetails);
   const {
@@ -64,62 +63,62 @@ const UpdateProduct = () => {
   const productId = id;
 
   useEffect(() => {
-      if (!product || (product && product._id !== productId) || isUpdated) {
-        dispatch(getProductDetails(productId));
-      } else {
-        setName(product.name);
- 
-        setPrice(product.price);
-        setDescription(product.description);
-        setCategory(product.category);
-        setSeller(product.seller);
-        setStock(product.stock);
-        setOldImages(product.images);
-        setSizes(product.sizes);
-      }
+    if (!product || (product && product._id !== productId) || isUpdated) {
+      dispatch(getProductDetails(productId));
+    } else {
+      setName(product.name);
+      setPrice(product.price);
+      setDescription(product.description);
+      setCategory(product.category);
+      setSeller(product.seller);
+      setStock(product.stock);
+      setOldImages(product.images);
+      setSizes(product.sizes);
+      setImages(product.images.map((img) => img.url));
+    }
 
-      if (error) {
-        toast.error(error, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        dispatch(clearErrors());
-      }
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
+    }
 
-      if (updateError) {
-        toast.error(updateError, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        dispatch(clearErrors());
-      }
+    if (updateError) {
+      toast.error(updateError, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
+    }
 
-      if (isUpdated) {
-        history("/admin/products");
-        toast.success("Product updated successfully", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        dispatch({ type: UPDATE_PRODUCT_RESET });
-      }
+    if (isUpdated) {
+      history("/admin/products");
+      toast.success("Product updated successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch({ type: UPDATE_PRODUCT_RESET });
+    }
   }, [dispatch, error, isUpdated, updateError, product, productId]);
 
   const addSize = () => {
@@ -130,7 +129,6 @@ const UpdateProduct = () => {
     }
     setSizes((oldArray) => [...oldArray, size]);
   };
-
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -152,7 +150,7 @@ const UpdateProduct = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-
+    console.log(images);
     dispatch(updateProduct(product._id, formData));
   };
 
@@ -160,33 +158,32 @@ const UpdateProduct = () => {
     const files = Array.from(e.target.files);
 
     setImagesPreview([]);
-    setImages([]);
     setOldImages([]);
 
-    files.forEach((file) => {
-      const reader = new FileReader();
+    if (files.length > 0) {
+      const newImages = [];
+      files.forEach((file) => {
+        const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImages((oldArray) => [...oldArray, reader.result]);
-        }
-      };
+        reader.onload = () => {
+          if (reader.readyState === 2) {
+            setImagesPreview((oldArray) => [...oldArray, reader.result]);
+            newImages.push(reader.result); // Store new images
+          }
+        };
 
-      reader.readAsDataURL(file);
-    });
+        reader.readAsDataURL(file);
+      });
+
+      setImages(newImages); // Update images state only if new files were selected
+    }
   };
-
-
-  
 
   const handleColorNameChange = (e) => {
     setColorName(e.target.value);
     // Reset hex value when color name changes
     setColorHex("");
   };
-
-
 
   return (
     <Fragment>
@@ -235,41 +232,59 @@ const UpdateProduct = () => {
                   </select>
                 </div>
 
-                  {colorName && (
-                    <div id="color_hex_field" className="d-flex flex-wrap">
-                    {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
-                      <div key={index} 
-                          style={{ 
-                            backgroundColor: hex, 
-                            width: hex === colorHex ? '32px' : '36px', 
-                            height: hex === colorHex ? '32px' : '36px', 
-                            margin: '4px', 
-                            cursor: 'pointer',
-                            border: hex === colorHex ? '2px solid black' : 'none',
-                            transition: 'all 0.2s ease'
+                {colorName && (
+                  <div id="color_hex_field" className="d-flex flex-wrap">
+                    {colors
+                      .find((color) => color.colorName === colorName)
+                      ?.colorHex.map((hex, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            backgroundColor: hex,
+                            width: hex === colorHex ? "32px" : "36px",
+                            height: hex === colorHex ? "32px" : "36px",
+                            margin: "4px",
+                            cursor: "pointer",
+                            border:
+                              hex === colorHex ? "2px solid black" : "none",
+                            transition: "all 0.2s ease",
                           }}
-                          onClick={() => setColorHex(hex)}>
-                      </div>
-                    ))}
+                          onClick={() => setColorHex(hex)}
+                        ></div>
+                      ))}
                   </div>
-                  )}
+                )}
 
-                    {colorName && colorHex && (
-                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{colorName}</div>
-                        <div style={{ 
-                          width: '20px', 
-                          height: '20px', 
-                          backgroundColor: colorHex, 
-                          border: '1px solid #ddd', 
-                          marginRight: '10px'
-                        }} />
+                {colorName && colorHex && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "5px",
+                      }}
+                    >
+                      <div style={{ minWidth: "100px", marginRight: "10px" }}>
+                        {colorName}
                       </div>
+                      <div
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          backgroundColor: colorHex,
+                          border: "1px solid #ddd",
+                          marginRight: "10px",
+                        }}
+                      />
                     </div>
-                  )}
-               
-
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label htmlFor="price_field">Price</label>
