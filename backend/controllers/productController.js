@@ -39,26 +39,23 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 8;
+  const resPerPage = 9; // hoặc một số khác tuỳ thuộc vào nhu cầu của bạn
   const productsCount = await Product.countDocuments();
+
   const apiFeatures = new APIFeatures(Product.find(), req.query)
+    .sort() // Đảm bảo rằng sắp xếp được áp dụng
     .search()
-    .filter();
-
+    .filter()
+    .pagination(resPerPage);
   let products = await apiFeatures.query;
-  let filteredProductsCount = products.length;
-
-  apiFeatures.pagination(resPerPage);
-  products = await apiFeatures.query.clone();
-
   res.status(200).json({
     success: true,
     productsCount,
     resPerPage,
-    filteredProductsCount,
     products,
   });
 });
+
 
 exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
   const resPerPage = 4;

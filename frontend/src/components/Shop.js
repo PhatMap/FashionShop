@@ -200,7 +200,7 @@ const Shop = () => {
               <div className="col-md-9">
                 {/* Products */}
                 <section id="products">{productsGrid}</section>
-                {resPerPage <= count && (
+                {productsCount > resPerPage && (
                   <div className="d-flex justify-content-center mt-5">
                     <Pagination
                       activePage={currentPage}
