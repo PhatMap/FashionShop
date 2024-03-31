@@ -228,7 +228,7 @@ const ProductDetails = () => {
               <hr />    
               <hr />
             
-                            <div className="mt-5 d-flex align-items-center">
+                <div className="mt-5 d-flex align-items-center">
                 <h4 style={{ margin: '0 10px 0 0' }}>Color:</h4>
                 <div style={{ 
                   backgroundColor: product?.colors?.colorHex ?? 'transparent', 

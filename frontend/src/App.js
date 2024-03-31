@@ -39,7 +39,7 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
-import Category from "./components/product/Category"
+import Category from "./components/product/Category";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
@@ -81,11 +81,11 @@ function App() {
         <div className="container container-fluid">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} /> {/* Thêm đường dẫn cho trang Shop */}
-            <Route path="/search/:keyword" element={<Shop/>} />
+            <Route path="/shop" element={<Shop />} />{" "}
+            {/* Thêm đường dẫn cho trang Shop */}
+            <Route path="/search/:keyword" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/category/:category" element={<Category />} />
-
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/shipping"
@@ -109,7 +109,6 @@ function App() {
                 )
               }
             />
-
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/password/forgot" element={<ForgotPassword />} />
@@ -126,7 +125,6 @@ function App() {
               path="/password/update"
               element={<ProtectedRoute component={UpdatePassword} />}
             />
-
             <Route
               path="/orders/me"
               element={<ProtectedRoute component={ListOrders} />}
@@ -141,21 +139,15 @@ function App() {
         <Routes>
           <Route
             path="/dashboard"
-            element={
-              <ProtectedRoute isAdmin={true} component={Dashboard} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={Dashboard} />}
           />
           <Route
             path="/admin/products"
-            element={
-              <ProtectedRoute isAdmin={true} component={ProductsList} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={ProductsList} />}
           />
           <Route
             path="/admin/product"
-            element={
-              <ProtectedRoute isAdmin={true} component={NewProduct} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={NewProduct} />}
           />
           <Route
             path="/admin/product/:id"
@@ -165,15 +157,11 @@ function App() {
           />
           <Route
             path="/admin/orders"
-            element={
-              <ProtectedRoute isAdmin={true} component={OrdersList} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={OrdersList} />}
           />
           <Route
             path="/admin/order/:id"
-            element={
-              <ProtectedRoute isAdmin={true} component={ProcessOrder} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={ProcessOrder} />}
           />
           <Route
             path="/admin/users"
@@ -181,9 +169,7 @@ function App() {
           />
           <Route
             path="/admin/user/:id"
-            element={
-              <ProtectedRoute isAdmin={true} component={UpdateUser} />
-            }
+            element={<ProtectedRoute isAdmin={true} component={UpdateUser} />}
           />
           <Route
             path="/admin/reviews"
@@ -192,10 +178,7 @@ function App() {
             }
           />
         </Routes>
-
-        {!loading && (!isAuthenticated || user.role !== "admin") && (
-          <Footer />
-        )}
+        <Footer />
       </div>
     </Router>
   );

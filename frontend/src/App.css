@@ -327,10 +327,19 @@ footer {
 }
 
 /* Cart */
-
+.cart {
+  background-color: white;
+}
 .cart-item {
   margin: 1.8rem 0rem;
   padding: 0rem 0.7rem;
+}
+
+.cart-MenuItem {
+  display: flex;
+  direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .cart-item a {
