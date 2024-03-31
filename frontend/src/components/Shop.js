@@ -52,6 +52,7 @@ const Shop = () => {
       });
     }
   }, [dispatch, keyword, currentPage, price, rating, error]);
+  
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -78,16 +79,10 @@ const Shop = () => {
     );
   };
 
-  // Nếu không tìm kiếm, hiển thị 4 sản phẩm 1 hàng
+
   const defaultProductsGrid = <div className="row">{renderProducts()}</div>;
-
-  // Kiểm tra nếu có từ khóa tìm kiếm
   const isSearchKeyword = keyword && keyword.trim() !== "";
-
-  // Số sản phẩm hiển thị tùy thuộc vào việc tìm kiếm
   const productsGrid = isSearchKeyword ? renderProducts() : defaultProductsGrid;
-
-  // Tính toán số lượng sản phẩm
   let count = productsCount;
   if (isSearchKeyword) {
     count = filteredProductsCount;
@@ -114,7 +109,7 @@ const Shop = () => {
               textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            Shop
+            Fashion
           </h1>
           <div className="container mt-5">
             <div className="row">
