@@ -104,7 +104,7 @@ const Header = () => {
           {/* Nút Shop */}
           <Link
             to="/shop"
-            style={{ textDecoration: "none" }}
+            style={{ color: "white" }}
             className="btn shop_button"
           >
             Shop
@@ -113,7 +113,7 @@ const Header = () => {
           <Link to="/cart">
             <FaShoppingCart
               className="ml-3"
-              style={{ fontSize: "30px", color: "#ffb700" }}
+              style={{ fontSize: "30px", color: "white" }}
               onMouseEnter={handleCartOpen}
               onMouseLeave={handleCartClose}
             />
@@ -124,8 +124,8 @@ const Header = () => {
             style={{
               fontSize: "13px",
               borderRadius: "50%",
-              background: "#ffb700",
-              color: "white",
+              background: "white",
+              color: "black",
             }}
           >
             {user ? cartItems.length : 0}

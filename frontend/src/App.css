@@ -25,9 +25,14 @@ body {
   border-radius: 5px;
 }
 
+/*Navbar elements*/
 nav {
-  background: #dfbc80;
+  background: black;
   padding: 1rem 1rem;
+}
+.login-btn {
+  background-color: #e3e3e3;
+  color: #2e2e2e;
 }
 
 #remove_btn {
@@ -46,7 +51,7 @@ nav {
 }
 
 #search_btn {
-  background: linear-gradient(45deg, #ffd700, #ffaf00);
+  background: gray;
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -64,7 +69,7 @@ nav {
 
 #login_btn,
 #view_btn {
-  background-color: #ffd300;
+  background-color: white;
   padding: 0.4rem 1.8rem;
   font-family: "calibri", sans-serif;
   font-size: 1.2rem;
@@ -198,10 +203,9 @@ nav {
 
 /* Footer */
 footer {
-  margin-top: 8rem;
-  color: grey;
-  bottom: 0;
-  width: 100%;
+  bottom: 0; /* Stick it to the bottom */
+  width: 100%; /* Full width */
+  margin-bottom: 0;
 }
 
 /* Ratings */
@@ -317,13 +321,14 @@ footer {
 }
 
 .menu-button {
-  background-color: #ffd300;
+  background-color: white;
 }
 
 /* Footer */
 
 .footer-container {
-  background-color: #e6d3b3;
+  background-color: black;
+  color: white;
 }
 
 /* Cart */
