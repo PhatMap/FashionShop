@@ -20,7 +20,6 @@ import { useParams } from "react-router-dom";
 const ProductDetails = () => {
   const { id } = useParams();
 
-  
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -83,16 +82,15 @@ const ProductDetails = () => {
     }
   }, [dispatch, error, id, reviewError, success]);
 
-
   const setTheSize = (size) => {
-    if(size === selectedSize) {
+    if (size === selectedSize) {
       setSelectedSize(null);
       setSize(null);
       return;
     }
     setSelectedSize(size);
     setSize(size);
-  }
+  };
 
   const addToCart = () => {
     let newQty = quantity;
@@ -105,7 +103,15 @@ const ProductDetails = () => {
         break;
       }
     }
-    dispatch(addItemToCart(id, newQty, size, product.colors.colorHex));
+    dispatch(
+      addItemToCart(
+        id,
+        newQty,
+        size,
+        product.colors.colorName,
+        product.colors.colorHex
+      )
+    );
     toast.success("Item Added to Cart", {
       position: "top-center",
       autoClose: 5000,
@@ -117,7 +123,6 @@ const ProductDetails = () => {
       theme: "light",
     });
   };
-  
 
   const increaseQty = () => {
     const count = document.querySelector(".count");
@@ -225,23 +230,21 @@ const ProductDetails = () => {
 
               <h4 className="mt-2">Description:</h4>
               <p>{product.description}</p>
-              <hr />    
               <hr />
-            
-                <div className="mt-5 d-flex align-items-center">
-                <h4 style={{ margin: '0 10px 0 0' }}>Color:</h4>
-                <div style={{ 
-                  backgroundColor: product?.colors?.colorHex ?? 'transparent', 
-                  width: '36px', 
-                  height: '36px', 
-                  borderRadius: '50%',
-                  marginRight: '10px'
-                }}></div>
-              
+              <div className="mt-5 d-flex align-items-center">
+                <h4 style={{ margin: "0 10px 0 0" }}>Color:</h4>
+                <div
+                  style={{
+                    backgroundColor: product?.colors?.colorHex ?? "transparent",
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    marginRight: "10px",
+                  }}
+                ></div>
               </div>
 
-
-
+              <hr />
 
               {/* Hiển thị size */}
               <div className="mt-5">
@@ -260,11 +263,11 @@ const ProductDetails = () => {
                     </button>
                   ))}
               </div>
+              <hr />
 
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   {/* Di chuyển giá vào đây để đặt cùng hàng với Add to Cart */}
-                  <hr />
                   <p id="product_price">${product.price}</p>
                 </div>
 

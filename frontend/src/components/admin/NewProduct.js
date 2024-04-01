@@ -2,23 +2,21 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import MetaData from "../layout/MetaData";
 import Sidebar from "./Sidebar";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { newProduct, clearErrors } from "../../actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from "react-router-dom";
+import { set } from "mongoose";
 
 const NewProduct = () => {
   const history = useNavigate();
   const [name, setName] = useState("");
   const [colorName, setColorName] = useState("");
 
-
   const [colorHex, setColorHex] = useState("");
- 
-  
+
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [sizes, setSizes] = useState([]);
@@ -28,8 +26,8 @@ const NewProduct = () => {
   const [seller, setSeller] = useState("");
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  const categories = ["", "Trousers", "Shirt", "Dress", "Shoe", "Belt"];
-  const sizeType = ["", "XS", "S", "M", "L", "XL", "XXL"];
+  const categories = ["Trousers", "Shirt", "Dress", "Shoe", "Belt"];
+  const sizeType = ["XS", "S", "M", "L", "XL", "XXL"];
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector((state) => state.newProduct);
   const colors = [
@@ -45,7 +43,6 @@ const NewProduct = () => {
     { colorName: "gray", colorHex: ["#808080", "#A9A9A9", "#C0C0C0"] },
     // Add other colors as needed
   ];
-  
 
   useEffect(() => {
     if (error) {
@@ -76,9 +73,13 @@ const NewProduct = () => {
       });
       dispatch({ type: NEW_PRODUCT_RESET });
     }
-  }, [dispatch, error, success, history]);
+    if (size) {
+      AddSize();
+      setSize("");
+    }
+  }, [dispatch, error, success, history, size]);
 
-  const addSize = () => {
+  const AddSize = () => {
     for (let i = 0; i < sizes.length; i++) {
       if (sizes[i] === size) {
         return;
@@ -92,7 +93,6 @@ const NewProduct = () => {
 
     const formData = new FormData();
     formData.set("name", name);
-
     formData.set("colors[colorName]", colorName);
     formData.set("colors[colorHex]", colorHex);
     formData.set("price", price);
@@ -100,7 +100,7 @@ const NewProduct = () => {
     formData.set("category", category);
     formData.set("stock", stock);
     formData.set("seller", seller);
-    
+
     sizes.forEach((size, index) => {
       formData.append(`sizes[${index}]`, size);
     });
@@ -131,16 +131,23 @@ const NewProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-  
 
   const handleColorNameChange = (e) => {
     setColorName(e.target.value);
     // Reset hex value when color name changes
     setColorHex("");
   };
- 
- 
 
+  const handleDeleteSize = (index) => {
+    sizes.splice(index, 1);
+  };
+
+  const ChooseSize = (size) => {
+    if (size === "") {
+      return;
+    }
+    setSize(size);
+  };
 
   return (
     <Fragment>
@@ -189,43 +196,59 @@ const NewProduct = () => {
                   </select>
                 </div>
 
-                  {colorName && (
-                    <div id="color_hex_field" className="d-flex flex-wrap">
-                    {colors.find(color => color.colorName === colorName)?.colorHex.map((hex, index) => (
-                      <div key={index} 
-                          style={{ 
-                            backgroundColor: hex, 
-                            width: hex === colorHex ? '32px' : '36px', 
-                            height: hex === colorHex ? '32px' : '36px', 
-                            margin: '4px', 
-                            cursor: 'pointer',
-                            border: hex === colorHex ? '2px solid black' : 'none',
-                            transition: 'all 0.2s ease'
+                {colorName && (
+                  <div id="color_hex_field" className="d-flex flex-wrap">
+                    {colors
+                      .find((color) => color.colorName === colorName)
+                      ?.colorHex.map((hex, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            backgroundColor: hex,
+                            width: hex === colorHex ? "32px" : "36px",
+                            height: hex === colorHex ? "32px" : "36px",
+                            margin: "4px",
+                            cursor: "pointer",
+                            border:
+                              hex === colorHex ? "2px solid black" : "none",
+                            transition: "all 0.2s ease",
                           }}
-                          onClick={() => setColorHex(hex)}>
-                      </div>
-                    ))}
+                          onClick={() => setColorHex(hex)}
+                        ></div>
+                      ))}
                   </div>
-                  )}
+                )}
 
-                    {colorName && colorHex && (
-                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-                        <div style={{ minWidth: '100px', marginRight: '10px' }}>{colorName}</div>
-                        <div style={{ 
-                          width: '20px', 
-                          height: '20px', 
-                          backgroundColor: colorHex, 
-                          border: '1px solid #ddd', 
-                          marginRight: '10px'
-                        }} />
+                {colorName && colorHex && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "5px",
+                      }}
+                    >
+                      <div style={{ minWidth: "100px", marginRight: "10px" }}>
+                        {colorName}
                       </div>
+                      <div
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          backgroundColor: colorHex,
+                          border: "1px solid #ddd",
+                          marginRight: "10px",
+                        }}
+                      />
                     </div>
-                  )}
-
-
-
-
+                  </div>
+                )}
                 <div className="form-group">
                   <label htmlFor="price_field">Price</label>
                   <input
@@ -250,29 +273,33 @@ const NewProduct = () => {
 
                 <div className="form-group">
                   <label htmlFor="sizes_field">Sizes</label>
-                  <p>
-                    Here
-                    {sizes.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
+                  <div className="delete-size-container">
+                    {sizes.map((size, index) => (
+                      <div key={size} className="name-deleteBtn-container">
+                        <span>{size}</span>
+                        <button
+                          className="delete-size-btn"
+                          onClick={() => handleDeleteSize(index)}
+                        >
+                          -
+                        </button>
+                      </div>
                     ))}
-                  </p>
+                  </div>
+
                   <select
                     className="form-control"
                     id="sizes_field"
                     value={size}
-                    onChange={(e) => setSize(e.target.value)}
+                    onChange={(e) => ChooseSize(e.target.value)}
                   >
-                    {sizeType.map((size) => (
-                      <option key={size} value={size}>
+                    <option value="">Select and add sizes</option>
+                    {sizeType.map((size, index) => (
+                      <option key={index} value={size}>
                         {size}
                       </option>
                     ))}
                   </select>
-                  <button type="button" onClick={addSize}>
-                    Add
-                  </button>
                 </div>
 
                 <div className="form-group">
@@ -281,8 +308,13 @@ const NewProduct = () => {
                     className="form-control"
                     id="category_field"
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setCategory(e.target.value);
+                      }
+                    }}
                   >
+                    <option value="">Select a catagory</option>
                     {categories.map((category) => (
                       <option key={category} value={category}>
                         {category}

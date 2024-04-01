@@ -17,7 +17,7 @@ const Home = () => {
   const [price, setPrice] = useState([1, 1000]);
   const [rating, setRating] = useState(0);
   const [category, setCategory] = useState("");
-  const [cols, setCols] = useState(4); 
+  const [cols, setCols] = useState(4);
   const navigate = useNavigate();
   const [fiveStarProducts, setFiveStarProducts] = useState([]);
 
@@ -47,16 +47,15 @@ const Home = () => {
         progress: undefined,
         theme: "light",
       });
-
     }
-
   }, [dispatch, keyword, currentPage, price, rating, error]);
-
-  
 
   const renderProducts = () => {
     return (
-      <div className="row" style={{ gap: '-100px', justifyContent: 'space-around' }}>
+      <div
+        className="row"
+        style={{ gap: "-100px", justifyContent: "space-around" }}
+      >
         {products.slice(0, 3).map((product) => (
           <Product
             key={product._id}
@@ -64,14 +63,13 @@ const Home = () => {
             col={cols}
             className="product-item"
             // Giảm margin và tăng độ rộng để sản phẩm hiển thị rộng hơn
-            style={{ margin: '10px', width: 'calc(100% / 3 - 10px)' }} 
+            style={{ margin: "10px", width: "calc(100% / 3 - 10px)" }}
           />
         ))}
       </div>
     );
   };
 
-  
   const [backgroundImages, setBackgroundImages] = useState([
     "../images/background_image_1.jpg",
     "../images/background_image_2.jpg",
@@ -80,24 +78,19 @@ const Home = () => {
   ]);
   const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0);
 
-
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentBackgroundIndex((prevIndex) => 
-        
-        (prevIndex + 1) % backgroundImages.length
+      setCurrentBackgroundIndex(
+        (prevIndex) => (prevIndex + 1) % backgroundImages.length
       );
-    }, 5000); 
-   
+    }, 5000);
+
     return () => clearInterval(intervalId);
-  }, [backgroundImages.length]); 
-  
-  
+  }, [backgroundImages.length]);
+
   const handleShowMore = () => {
-    navigate('/shop'); 
+    navigate("/shop");
   };
-
-
 
   const defaultProductsGrid = <div className="row">{renderProducts()}</div>;
 
@@ -109,9 +102,6 @@ const Home = () => {
   if (isSearchKeyword) {
     count = filteredProductsCount;
   }
-
-
-
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [categories] = useState([
@@ -170,27 +160,26 @@ const Home = () => {
               textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-                  <div>
-          {/* Hiển thị hình ảnh từ mảng backgroundImages */}
-          <img
-            src={backgroundImages[currentBackgroundIndex]}
-            alt="Background Image"
-            style={{ width: "100%", maxHeight: "500px" }}
-          />
-        </div>
-
-          <h1
-            id="products_heading"
-            style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              color: "#333",
-              textAlign: "left",
-              textTransform: "uppercase",
-              margin: "40px 0 20px", // Giảm khoảng cách nếu cần
-              textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
-            }}
-          ></h1>
+            <div>
+              {/* Hiển thị hình ảnh từ mảng backgroundImages */}
+              <img
+                src={backgroundImages[currentBackgroundIndex]}
+                alt="Background Image"
+                style={{ width: "100%", maxHeight: "500px" }}
+              />
+            </div>
+            <h1
+              id="products_heading"
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                color: "#333",
+                textAlign: "left",
+                textTransform: "uppercase",
+                margin: "40px 0 20px", // Giảm khoảng cách nếu cần
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+              }}
+            ></h1>
             Sản Phẩm Mới Nhất
           </h1>
           <div className="container mt-5">
@@ -199,31 +188,51 @@ const Home = () => {
                 <div
                   className="px-2"
                   style={{ width: "200px", marginLeft: "-140px" }}
-                >
-                </div>
+                ></div>
               </div>
               <div className="col-md-9">
                 {/* Products */}
                 <section id="products">{productsGrid}</section>
-                <button onClick={handleShowMore} style={{ float: 'right', marginTop: '10px' }}>
-              Show More
-            </button>
-              </div>   
-            </div>  
+                <button
+                  onClick={handleShowMore}
+                  style={{ float: "right", marginTop: "10px" }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div>
           </div>
-         
-
-
-          <h2 style={{ textAlign: "center", margin: "20px 0" }}>Danh Mục Sản Phẩm</h2>
-      <div className="categories-container" style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
-        {categories.map((category, index) => (
-          <div key={index} onClick={() => navigate(category.path)} style={{ cursor: "pointer", flex: 1, padding: "10px" }}>
-            <img src={category.images[currentImageIndex]} alt={category.name} style={{ width: "100%", height: "auto", marginBottom: "10px" }} />
-            <p style={{ textAlign: "center" }}>{category.name}</p>
+          <div className="home-line-between"></div>
+          <h2 style={{ textAlign: "center", margin: "20px 0" }}>
+            Danh Mục Sản Phẩm
+          </h2>
+          <div
+            className="categories-container"
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              marginBottom: "20px",
+            }}
+          >
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                onClick={() => navigate(category.path)}
+                style={{ cursor: "pointer", flex: 1, padding: "10px" }}
+              >
+                <p className="category">{category.name}</p>
+                <img
+                  src={category.images[currentImageIndex]}
+                  alt={category.name}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    marginBottom: "10px",
+                  }}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-          
         </Fragment>
       )}
     </Fragment>

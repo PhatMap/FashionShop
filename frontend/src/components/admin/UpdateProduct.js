@@ -13,6 +13,7 @@ import {
 } from "../../actions/productActions";
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate, useParams } from "react-router-dom";
+import { set } from "mongoose";
 
 const UpdateProduct = () => {
   const history = useNavigate();
@@ -36,7 +37,7 @@ const UpdateProduct = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
 
   const categories = ["", "Trousers", "Shirt", "Dress", "Shoe", "Belt"];
-  const sizeType = ["", "XS", "S", "M", "L", "XL", "XXL"];
+  const sizeType = ["XS", "S", "M", "L", "XL", "XXL"];
 
   const dispatch = useDispatch();
   const colors = [
@@ -75,6 +76,8 @@ const UpdateProduct = () => {
       setOldImages(product.images);
       setSizes(product.sizes);
       setImages(product.images.map((img) => img.url));
+      setColorName(product?.colors?.colorName);
+      setColorHex(product?.colors?.colorHex);
     }
 
     if (error) {
@@ -121,13 +124,31 @@ const UpdateProduct = () => {
     }
   }, [dispatch, error, isUpdated, updateError, product, productId]);
 
-  const addSize = () => {
-    for (let i = 0; i < sizes.length; i++) {
-      if (sizes[i] === size) {
-        return;
-      }
+  useEffect(() => {
+    if (size) {
+      AddSize();
+      setSize("");
     }
-    setSizes((oldArray) => [...oldArray, size]);
+  }, [size]);
+
+  const AddSize = () => {
+    setSizes((oldSizes) => {
+      if (!oldSizes.includes(size)) {
+        return [...oldSizes, size];
+      }
+      return oldSizes;
+    });
+  };
+
+  const handleDeleteSize = (index) => {
+    setSizes((sizes) => sizes.filter((_, i) => i !== index));
+  };
+
+  const ChooseSize = (size) => {
+    if (size === "") {
+      return;
+    }
+    setSize(size);
   };
 
   const submitHandler = (e) => {
@@ -150,7 +171,6 @@ const UpdateProduct = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-    console.log(images);
     dispatch(updateProduct(product._id, formData));
   };
 
@@ -298,41 +318,35 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="description_field">Description</label>
-                  <textarea
-                    className="form-control"
-                    id="description_field"
-                    rows="8"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  ></textarea>
-                </div>
-
-                <div className="form-group">
                   <label htmlFor="sizes_field">Sizes</label>
-                  <p>
-                    Here
-                    {sizes.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
+                  <div className="delete-size-container">
+                    {sizes.map((size, index) => (
+                      <div key={size} className="name-deleteBtn-container">
+                        <span>{size}</span>
+                        <button
+                          type="button"
+                          className="delete-size-btn"
+                          onClick={() => handleDeleteSize(index)}
+                        >
+                          -
+                        </button>
+                      </div>
                     ))}
-                  </p>
+                  </div>
+
                   <select
                     className="form-control"
                     id="sizes_field"
                     value={size}
-                    onChange={(e) => setSize(e.target.value)}
+                    onChange={(e) => ChooseSize(e.target.value)}
                   >
-                    {sizeType.map((size) => (
-                      <option key={size} value={size}>
+                    <option value="">Select and add sizes</option>
+                    {sizeType.map((size, index) => (
+                      <option key={index} value={size}>
                         {size}
                       </option>
                     ))}
                   </select>
-                  <button type="button" onClick={addSize}>
-                    Add
-                  </button>
                 </div>
 
                 <div className="form-group">
@@ -341,7 +355,11 @@ const UpdateProduct = () => {
                     className="form-control"
                     id="category_field"
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value !== "") {
+                        setCategory(e.target.value);
+                      }
+                    }}
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>

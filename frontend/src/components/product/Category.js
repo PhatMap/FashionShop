@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useParams, useNavigate } from "react-router-dom";
-import Footer from "../layout/Footer";
 import { getProductsByCategory } from "../../actions/productActions";
 
 const Category = () => {
@@ -166,7 +165,6 @@ const Category = () => {
           )}
         </Fragment>
       )}
-      <Footer />
     </Fragment>
   );
 };

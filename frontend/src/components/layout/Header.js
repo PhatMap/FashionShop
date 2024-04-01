@@ -135,10 +135,23 @@ const Header = () => {
             {cartItems.map((item, index) => (
               <MenuItem key={index}>
                 <div className="cart-MenuItem">
-                  <img src={item.image} height="90" width="115" />
-                  <p>Tên sản phẩm: {item.name}</p>
-                  <p>Số lượng mua: {item.quantity}</p>
-                  <p>Màu: {item.color}</p>
+                  <img src={item.image} height="40" width="40" />
+                  <div className="cart-MenuItem-container">
+                    <p>Tên sản phẩm: {item.name.substring(0, 20)}...</p>
+                    <p>Số lượng mua: {item.quantity}</p>
+                    <div className="cart-summary-color">
+                      <p>Màu:</p>
+                      <p>{item.colorName}</p>
+                      <div
+                        style={{
+                          backgroundColor: item.colorHex ?? "transparent",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </MenuItem>
             ))}
