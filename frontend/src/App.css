@@ -234,8 +234,59 @@ footer {
   content: "\f005 \f005 \f005 \f005 \f005";
   color: #f8ce0b;
 }
+/* Product */
+.product-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.product-image {
+  height: 300px; /* Hoặc bất kỳ chiều cao nào bạn muốn */
+  width: auto; /* Giữ tỷ lệ chiều rộng tự nhiên của ảnh */
+  object-fit: cover; /* Đảm bảo ảnh che đầy kích thước đã định mà không làm méo ảnh */
+}
+.product-image:hover {
+  transform: scale(1.05); /* Phóng to ảnh khi di chuột vào */
+}
+
 
 /* Product Details Page */
+.product-thumbnails {
+  margin-right: 0px;
+  
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column; /* Sắp xếp các ảnh theo chiều dọc */
+  align-items: flex-start; /* Căn chỉnh các ảnh về phía lề trái */
+  gap: 10px; /* Khoảng cách giữa các ảnh */
+  margin-left: 10px; /* Khoảng cách với lề bên trái */
+  /* Có thể thêm padding nếu cần */
+  
+}
+
+.product-thumbnail {
+  width: 100px; /* Điều chỉnh chiều rộng của ảnh */
+  height: 100px; /* Điều chỉnh chiều cao của ảnh */
+  object-fit: cover; /* Đảm bảo ảnh che đầy không làm méo ảnh */
+  margin-left: -120px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out;
+  
+}
+.product-thumbnail.active {
+  border: 2px solid #333; /* Thêm border khi ảnh đang được hover */
+}
+
+.product-thumbnail:hover {
+  opacity: 1;
+}
+
+
+
 #product_id {
   color: grey;
   font-size: 0.8rem;
@@ -274,7 +325,9 @@ footer {
 }
 
 #product_image {
-  margin-top: 9rem;
+  margin-top: 5rem;
+  margin-left: -80px;
+ 
 }
 
 /* Loader */

@@ -53,7 +53,7 @@ const Shop = () => {
     }
   }, [dispatch, keyword, currentPage, price, rating, error]);
   
-
+  
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
