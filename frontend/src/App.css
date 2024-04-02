@@ -243,10 +243,11 @@ footer {
   text-overflow: ellipsis;
 }
 .product-image {
-  height: 300px; /* Hoặc bất kỳ chiều cao nào bạn muốn */
-  width: auto; /* Giữ tỷ lệ chiều rộng tự nhiên của ảnh */
-  object-fit: cover; /* Đảm bảo ảnh che đầy kích thước đã định mà không làm méo ảnh */
+  height: 200px; /* hoặc bất kỳ chiều cao nào bạn muốn */
+  object-fit: cover;
+  width: 100%; /* Đảm bảo rằng ảnh sẽ vừa với chiều rộng của container */
 }
+
 .product-image:hover {
   transform: scale(1.05); /* Phóng to ảnh khi di chuột vào */
 }

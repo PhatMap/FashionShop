@@ -7,11 +7,7 @@ import ListReviews from "../review/ListReviews";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductDetails,
-  newReview,
-  clearErrors,
-} from "../../actions/productActions";
+import { getProductDetails,newReview,clearErrors,} from "../../actions/productActions";
 import { addItemToCart } from "../../actions/cartActions";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { useParams } from "react-router-dom";
@@ -34,7 +30,7 @@ const ProductDetails = () => {
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
-  const [activeImage, setActiveImage] = useState(product.images[0].url);
+
 
 
   useEffect(() => {
@@ -143,6 +139,9 @@ const ProductDetails = () => {
     setQuantity(qty);
   };
 
+
+  const [activeImage, setActiveImage] = useState(product?.images?.[0]?.url);
+
   function setUserRatings() {
     const stars = document.querySelectorAll(".star");
 
@@ -201,16 +200,17 @@ const ProductDetails = () => {
           <MetaData title={product.name} />
           <div className="row d-flex justify-content-around">
           <div className="product-thumbnails">
-              {product.images.map((image, index) => (
-                <img
-                  key={image.public_id}
-                  src={image.url}
-                  alt={`Product Preview ${index}`}
-                  className={`product-thumbnail ${activeImage === image.url ? 'active' : ''}`}
-                  onMouseEnter={() => setActiveImage(image.url)}
-                />
-              ))}
-            </div>
+            {product && product.images && product.images.map((image, index) => (
+              <img
+                key={image.public_id}
+                src={image.url}
+                alt={`Product Preview ${index}`}
+                className={`product-thumbnail ${activeImage === image.url ? 'active' : ''}`}
+                onMouseEnter={() => setActiveImage(image.url)}
+              />
+            ))}
+        </div>
+
             <div className="col-12 col-lg-5 img-fluid" id="product_image">
             
               <img className="d-block w-100" src={activeImage} alt={product.title} />
