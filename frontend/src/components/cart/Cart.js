@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
+import { addItemToCart, removeItemFromCart, getUserCart } from "../../actions/cartActions";
 
 const Cart = () => {
   const history = useNavigate();
@@ -33,6 +33,10 @@ const Cart = () => {
   const checkoutHandler = () => {
     history("/login?redirect=/shipping");
   };
+
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, []);
 
   return (
     <Fragment>

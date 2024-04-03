@@ -25,8 +25,6 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-
-
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
 
