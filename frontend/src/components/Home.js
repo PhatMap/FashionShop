@@ -17,12 +17,12 @@ const Home = () => {
   const [price, setPrice] = useState([1, 1000]);
   const [rating, setRating] = useState(0);
   const [category, setCategory] = useState("");
-  const [cols, setCols] = useState(4);
+  const [cols, setCols] = useState(3);
   const navigate = useNavigate();
   const [fiveStarProducts, setFiveStarProducts] = useState([]);
 
   const dispatch = useDispatch();
-
+  
   const {
     loading,
     products,
@@ -54,21 +54,57 @@ const Home = () => {
     return (
       <div
         className="row"
-        style={{ gap: "-100px", justifyContent: "space-around" }}
       >
-        {products.slice(0, 3).map((product) => (
+        {products.slice(0, 4).map((product) => (
           <Product
             key={product._id}
             product={product}
             col={cols}
             className="product-item"
-            // Giảm margin và tăng độ rộng để sản phẩm hiển thị rộng hơn
-            style={{ margin: "10px", width: "calc(100% / 3 - 10px)" }}
+            style={{ width: "70px", marginLeft: "-150px" }}
+            
           />
         ))}
       </div>
     );
   };
+
+
+  useEffect(() => {
+    if(products.length > 0) {
+      const topRatedProducts = products
+        .filter((p) => p.ratings >= 4.5)
+        
+        .slice(0, 4); 
+    
+      setFiveStarProducts(topRatedProducts);
+    }
+  }, [products]);
+  
+  
+
+const renderProductsStar = () => {
+  return (
+    <div className="row">
+      {fiveStarProducts.map((product) => (
+        <Product
+          key={product._id}
+          product={product}
+          col={cols} 
+          className="product-item"
+          style={{ width: "70px", marginLeft: "-150px" }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const handleShowMorestar = () => {
+  navigate("/shop", { state: { fromFiveStar: true } });
+};
+  
+  
+  
 
   const [backgroundImages, setBackgroundImages] = useState([
     "../images/background_image_1.jpg",
@@ -139,6 +175,17 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
+
+  const getStyle = () => ({
+    fontSize: "24px",
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
+    textTransform: "uppercase",
+    margin: "40px 0",
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+  });
+
   return (
     <Fragment>
       <ToastContainer />
@@ -154,7 +201,7 @@ const Home = () => {
               fontSize: "24px",
               fontWeight: "bold",
               color: "#333",
-              textAlign: "left",
+              textAlign: "center",
               textTransform: "uppercase",
               margin: "40px 0",
               textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
@@ -170,28 +217,7 @@ const Home = () => {
             </div>
             <h1
               id="products_heading"
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-                color: "#333",
-                textAlign: "left",
-                textTransform: "uppercase",
-                margin: "40px 0 20px", // Giảm khoảng cách nếu cần
-                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
-              }}
-            ></h1>
-            Sản Phẩm Mới Nhất
-          </h1>
-          <div className="container mt-5">
-            <div className="row">
-              <div className="col-md-3" style={{ marginRight: "-150px" }}>
-                <div
-                  className="px-2"
-                  style={{ width: "200px", marginLeft: "-140px" }}
-                ></div>
-              </div>
-              <div className="col-md-9">
-                {/* Products */}
+              style={getStyle()} ></h1>Sản Phẩm Mới Nhất</h1>
                 <section id="products">{productsGrid}</section>
                 <button
                   onClick={handleShowMore}
@@ -199,11 +225,9 @@ const Home = () => {
                 >
                   Show More
                 </button>
-              </div>
-            </div>
-          </div>
           <div className="home-line-between"></div>
-          <h2 style={{ textAlign: "center", margin: "20px 0" }}>
+
+          <h2 style={getStyle()}>
             Danh Mục Sản Phẩm
           </h2>
           <div
@@ -225,14 +249,33 @@ const Home = () => {
                   src={category.images[currentImageIndex]}
                   alt={category.name}
                   style={{
-                    width: "100%",
-                    height: "auto",
-                    marginBottom: "10px",
+                    marginLeft:"125px",
+                    marginRight:"-120px",
+                    width: "80%",
+                    height: "400px",
+                    
                   }}
                 />
               </div>
             ))}
           </div>
+          <div className="home-line-between">
+            <h2 style={getStyle()}>Sản Phẩm Được Đánh Giá Cao</h2>
+              {renderProductsStar()}
+                <button
+                  onClick={handleShowMorestar} 
+                  style={{ float: "right", marginTop: "10px" ,marginBottom:"50px"}}
+                >
+                  Show More
+                </button>
+             </div>
+             <div className="home-page-container" style={{ marginBottom: "100px" }}>
+              
+            </div>
+
+          
+
+  
         </Fragment>
       )}
     </Fragment>

@@ -11,6 +11,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import ProductCarousel from "./layout/Carousel";
+import { useLocation } from "react-router-dom";
 
 const Shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,7 +54,7 @@ const Shop = () => {
     }
   }, [dispatch, keyword, currentPage, price, rating, error]);
   
-
+  
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
@@ -87,6 +88,15 @@ const Shop = () => {
   if (isSearchKeyword) {
     count = filteredProductsCount;
   }
+  
+  const location = useLocation();
+
+useEffect(() => {
+  if(location.state?.fromFiveStar) {
+    setRating(5); // chỉ hiển thị sản phẩm có 5 sao
+  }
+}, [location]);
+  
 
   return (
     <Fragment>

@@ -236,7 +236,18 @@ const UpdateProduct = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="color_name_field">Color Name</label>
+                  <div className="color-display-container d-flex align-items-center mb-3">
+                    <label htmlFor="color_name_field" style={{ marginRight: '10px', marginBottom: '0' }}>Current color:</label>
+                    <div style={{ 
+                      backgroundColor: product?.colors?.colorHex ?? 'transparent', 
+                      width: '30px', 
+                      height: '30px', 
+                      borderRadius: '50%',
+                      marginRight: '10px'
+                    }}></div>
+                  </div>
+
+                  <label htmlFor="color_name_field" className="form-label">Color changes</label>
                   <select
                     id="color_name_field"
                     className="form-control"
@@ -251,6 +262,7 @@ const UpdateProduct = () => {
                     ))}
                   </select>
                 </div>
+
 
                 {colorName && (
                   <div id="color_hex_field" className="d-flex flex-wrap">

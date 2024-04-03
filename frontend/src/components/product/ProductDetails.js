@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Carousel } from "react-bootstrap";
 
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
@@ -8,11 +7,7 @@ import ListReviews from "../review/ListReviews";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductDetails,
-  newReview,
-  clearErrors,
-} from "../../actions/productActions";
+import { getProductDetails,newReview,clearErrors,} from "../../actions/productActions";
 import { addItemToCart } from "../../actions/cartActions";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { useParams } from "react-router-dom";
@@ -35,6 +30,8 @@ const ProductDetails = () => {
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
+
+
 
   useEffect(() => {
     dispatch(getProductDetails(id));
@@ -142,6 +139,9 @@ const ProductDetails = () => {
     setQuantity(qty);
   };
 
+
+  const [activeImage, setActiveImage] = useState(product?.images?.[0]?.url);
+
   function setUserRatings() {
     const stars = document.querySelectorAll(".star");
 
@@ -199,19 +199,22 @@ const ProductDetails = () => {
         <Fragment>
           <MetaData title={product.name} />
           <div className="row d-flex justify-content-around">
+          <div className="product-thumbnails">
+            {product && product.images && product.images.map((image, index) => (
+              <img
+                key={image.public_id}
+                src={image.url}
+                alt={`Product Preview ${index}`}
+                className={`product-thumbnail ${activeImage === image.url ? 'active' : ''}`}
+                onMouseEnter={() => setActiveImage(image.url)}
+              />
+            ))}
+        </div>
+
             <div className="col-12 col-lg-5 img-fluid" id="product_image">
-              <Carousel pause="hover">
-                {product.images &&
-                  product.images.map((image) => (
-                    <Carousel.Item key={image.public_id}>
-                      <img
-                        className="d-block w-100"
-                        src={image.url}
-                        alt={product.title}
-                      />
-                    </Carousel.Item>
-                  ))}
-              </Carousel>
+            
+              <img className="d-block w-100" src={activeImage} alt={product.title} />
+           
             </div>
 
             <div className="col-12 col-lg-5 mt-5">
@@ -226,7 +229,6 @@ const ProductDetails = () => {
                   style={{ width: `${(product.ratings / 5) * 100}%` }}
                 ></div>
               </div>
-              <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
 
               <h4 className="mt-2">Description:</h4>
               <p>{product.description}</p>
@@ -315,7 +317,9 @@ const ProductDetails = () => {
               <p id="product_seller mb-3">
                 Sold by: <strong>{product.seller}</strong>
               </p>
-
+              {product.reviews && product.reviews.length > 0 && (
+                  <ListReviews reviews={product.reviews} />
+                )}
               {user ? (
                 <button
                   id="review_btn"
