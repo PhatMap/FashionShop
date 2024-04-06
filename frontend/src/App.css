@@ -215,10 +215,13 @@ footer {
   position: relative;
   font-family: FontAwesome;
   color: #fdcc0d;
+  margin-Left:"30px";
+
 }
 
 .rating-outer::before {
   content: "\f006 \f006 \f006 \f006 \f006";
+  margin-Left:"30px"
 }
 
 .rating-inner {

@@ -11,6 +11,8 @@ import { getProductDetails,newReview,clearErrors,} from "../../actions/productAc
 import { addItemToCart } from "../../actions/cartActions";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { useParams } from "react-router-dom";
+import ProductImageZoom from './ProductImageZoom'; // Đường dẫn phải chính xác
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -30,6 +32,13 @@ const ProductDetails = () => {
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
+  const [localProduct, setLocalProduct] = useState(product || {
+    // ... cung cấp một đối tượng cơ bản với các thuộc tính cần thiết, ví dụ:
+    ratingsBreakdown: {},
+    // các thuộc tính khác...
+  });
+  
+
 
 
 
@@ -140,7 +149,16 @@ const ProductDetails = () => {
   };
 
 
+
+
+
   const [activeImage, setActiveImage] = useState(product?.images?.[0]?.url);
+    useEffect(() => {
+      if (product && product.images && product.images.length > 0) {
+        setActiveImage(product.images[0].url);
+      }
+    }, [product]);
+
 
   function setUserRatings() {
     const stars = document.querySelectorAll(".star");
@@ -189,7 +207,6 @@ const ProductDetails = () => {
 
     dispatch(newReview(formData));
   };
-
   return (
     <Fragment>
       <ToastContainer />
@@ -210,26 +227,23 @@ const ProductDetails = () => {
               />
             ))}
         </div>
-
-            <div className="col-12 col-lg-5 img-fluid" id="product_image">
-            
-              <img className="d-block w-100" src={activeImage} alt={product.title} />
-           
-            </div>
-
+          <div className="col-12 col-lg-5 img-fluid" id="product_image">
+            <ProductImageZoom image={activeImage} />
+          </div>
             <div className="col-12 col-lg-5 mt-5">
               <h3>{product.name}</h3>
               <p id="product_id">Product # {product._id}</p>
 
               <hr />
-
+              <div  style={{ marginRight: '30px', fontSize: '20px',  }}>Ratings: {product?.ratings?.toFixed(1).replace('.', ',') ?? 'No Ratings'}
               <div className="rating-outer">
                 <div
-                  className="rating-inner"
+                  className="rating-inner" 
                   style={{ width: `${(product.ratings / 5) * 100}%` }}
                 ></div>
               </div>
-
+              </div>
+             
               <h4 className="mt-2">Description:</h4>
               <p>{product.description}</p>
               <hr />
@@ -405,10 +419,13 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
-
+          
           {product.reviews && product.reviews.length > 0 && (
             <ListReviews reviews={product.reviews} />
           )}
+
+
+
         </Fragment>
       )}
     </Fragment>
