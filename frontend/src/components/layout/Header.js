@@ -10,6 +10,7 @@ import "../../App.css";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Popper } from "@mui/material";
+import { getUserCart } from "../../actions/cartActions";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,6 +51,11 @@ const Header = () => {
     });
     dispatch(logout());
   };
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserCart());
+    }
+  }, [dispatch, user]);
 
   return (
     <Fragment>

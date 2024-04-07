@@ -27,37 +27,38 @@ export const getUserCart = () => async (dispatch, getState) => {
 };
 
 export const addItemToCart =
-  (id, quantity, size, colorName, colorHex) => async (dispatch, getState) => {
+  (id, quantity, size, colorName, colorHex) => async (dispatch) => {
     try {
-      // Fetch product details
       const { data } = await axios.get(`/api/v1/product/${id}`);
 
-      // Construct item object
-      const item = {
-        product: data.product._id,
-        name: data.product.name,
-        price: data.product.price,
-        image: data.product.images[0].url,
-        quantity,
-        sizes: size,
-        colors: {
-          colorName,
-          colorHex,
-        },
-      };
+      // Check if data and data.product are truthy
+      if (data && data.product) {
+        // Construct item object
+        const item = {
+          product: data.product._id,
+          name: data.product.name,
+          price: data.product.price,
+          image: data.product.images[0] ? data.product.images[0].url : "", // Check if images[0] exists
+          quantity,
+          sizes: size,
+          colors: {
+            colorName,
+            colorHex,
+          },
+        };
 
-      const { result } = await axios.post("/api/v1/cart", {
-        cartItems: [item],
-      });
-
-      dispatch({
-        type: ADD_TO_CART_SUCCESS,
-        payload: result.success,
-      });
+        const newData = await axios.post("/api/v1/cart", {
+          cartItems: [item],
+        });
+        dispatch({
+          type: ADD_TO_CART_SUCCESS,
+          payload: newData,
+        });
+      }
     } catch (error) {
       dispatch({
         type: ADD_TO_CART_FAIL,
-        payload: "An error occurred while adding the item to the cart.",
+        payload: error.message,
       });
     }
   };

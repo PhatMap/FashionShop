@@ -5,30 +5,32 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 exports.addToCart = catchAsyncErrors(async (req, res, next) => {
   const { cartItems } = req.body;
 
-  try {
-    let cart = await Cart.findOne({ user: req.user.id });
+  let cart = await Cart.findOne({ user: req.user.id });
 
-    if (!cart) {
-      cart = await Cart.create({
-        user: req.user.id,
-        cartItems,
-      });
-    } else {
-      cart.cartItems.push(...cartItems);
-      await cart.save();
-    }
-
-    res.status(200).json({
-      success: true,
-      cart,
+  if (!cart) {
+    cart = await Cart.create({
+      user: req.user.id,
+      cartItems,
     });
-  } catch (error) {
-    console.error("Error adding items to cart:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+  } else {
+    cart.cartItems.push(...cartItems);
+    await cart.save();
   }
+
+  let newCart;
+  try {
+    newCart = await Cart.findOne({ user: req.user.id });
+  } catch (error) {
+    console.error("Error finding cart:", error);
+    return res
+      .status(500)
+      .json({ success: false, error: "Internal Server Error" });
+  }
+
+  res.status(200).json({
+    success: true,
+    cart: newCart.cartItems,
+  });
 });
 
 exports.getUserCart = catchAsyncErrors(async (req, res, next) => {

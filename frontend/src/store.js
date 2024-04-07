@@ -49,7 +49,6 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   order: orderReducer,
   newReview: newReviewReducer,
-  cart: cartReducer,
 });
 
 const middlware = [thunk];

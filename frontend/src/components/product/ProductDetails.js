@@ -7,8 +7,12 @@ import ListReviews from "../review/ListReviews";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails,newReview,clearErrors,} from "../../actions/productActions";
-import { addItemToCart } from "../../actions/cartActions";
+import {
+  getProductDetails,
+  newReview,
+  clearErrors,
+} from "../../actions/productActions";
+import { addItemToCart, getUserCart } from "../../actions/cartActions";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { useParams } from "react-router-dom";
 import ProductImageZoom from './ProductImageZoom'; // Đường dẫn phải chính xác
@@ -29,6 +33,7 @@ const ProductDetails = () => {
   );
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
@@ -38,8 +43,6 @@ const ProductDetails = () => {
     // các thuộc tính khác...
   });
   
-
-
 
 
   useEffect(() => {
@@ -87,6 +90,7 @@ const ProductDetails = () => {
       dispatch({ type: NEW_REVIEW_RESET });
     }
   }, [dispatch, error, id, reviewError, success]);
+
 
   const setTheSize = (size) => {
     if (size === selectedSize) {
@@ -148,10 +152,13 @@ const ProductDetails = () => {
     setQuantity(qty);
   };
 
+<<<<<<< Updated upstream
 
 
 
 
+=======
+>>>>>>> Stashed changes
   const [activeImage, setActiveImage] = useState(product?.images?.[0]?.url);
     useEffect(() => {
       if (product && product.images && product.images.length > 0) {
@@ -207,6 +214,12 @@ const ProductDetails = () => {
 
     dispatch(newReview(formData));
   };
+<<<<<<< Updated upstream
+=======
+
+  
+
+>>>>>>> Stashed changes
   return (
     <Fragment>
       <ToastContainer />
@@ -216,6 +229,7 @@ const ProductDetails = () => {
         <Fragment>
           <MetaData title={product.name} />
           <div className="row d-flex justify-content-around">
+<<<<<<< Updated upstream
           <div className="product-thumbnails">
             {product && product.images && product.images.map((image, index) => (
               <img
@@ -230,6 +244,32 @@ const ProductDetails = () => {
           <div className="col-12 col-lg-5 img-fluid" id="product_image">
             <ProductImageZoom image={activeImage} />
           </div>
+=======
+            <div className="product-thumbnails">
+              {product &&
+                product.images &&
+                product.images.map((image, index) => (
+                  <img
+                    key={image.public_id}
+                    src={image.url}
+                    alt={`Product Preview ${index}`}
+                    className={`product-thumbnail ${
+                      activeImage === image.url ? "active" : ""
+                    }`}
+                    onMouseEnter={() => setActiveImage(image.url)}
+                  />
+                ))}
+            </div>
+
+            <div className="col-12 col-lg-5 img-fluid" id="product_image">
+              <img
+                className="d-block w-100"
+                src={activeImage}
+                alt={product.title}
+              />
+            </div>
+
+>>>>>>> Stashed changes
             <div className="col-12 col-lg-5 mt-5">
               <h3>{product.name}</h3>
               <p id="product_id">Product # {product._id}</p>
@@ -332,8 +372,8 @@ const ProductDetails = () => {
                 Sold by: <strong>{product.seller}</strong>
               </p>
               {product.reviews && product.reviews.length > 0 && (
-                  <ListReviews reviews={product.reviews} />
-                )}
+                <ListReviews reviews={product.reviews} />
+              )}
               {user ? (
                 <button
                   id="review_btn"

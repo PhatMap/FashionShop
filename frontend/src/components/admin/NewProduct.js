@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { newProduct, clearErrors } from "../../actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { useNavigate } from "react-router-dom";
-import { set } from "mongoose";
 
 const NewProduct = () => {
   const history = useNavigate();

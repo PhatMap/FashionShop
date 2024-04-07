@@ -2,7 +2,11 @@ import React, { Fragment, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, removeItemFromCart, getUserCart } from "../../actions/cartActions";
+import {
+  addItemToCart,
+  removeItemFromCart,
+  getUserCart,
+} from "../../actions/cartActions";
 
 const Cart = () => {
   const history = useNavigate();
@@ -35,8 +39,10 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserCart());
-  }, []);
+    if (cartItems) {
+      dispatch(getUserCart());
+    }
+  }, [dispatch, cartItems]);
 
   return (
     <Fragment>
