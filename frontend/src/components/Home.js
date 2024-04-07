@@ -144,24 +144,32 @@ const handleShowMorestar = () => {
     {
       name: "Trousers",
       images: [
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711873017/products/yrldavvbleswf2fozlex.jpg",
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711872666/products/q4lmrlteuf2guxvrshkt.jpg",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141529/products/rv1yiha0ctpikh34eqvp.jpg",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141530/products/zumqc0bc28kwucl4rcm9.webp",
       ],
       path: "/category/Trousers",
     },
     {
       name: "Shirt",
       images: [
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711872666/products/q4lmrlteuf2guxvrshkt.jpg",
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711874764/products/plfymvcula6ujq14ouph.webp",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141368/products/zkyxqkd9er5o1nwsx28h.webp",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141367/products/ywacs7qaojn2t5muetsy.webp",
       ],
       path: "/category/Shirt",
     },
     {
+      name: "Dress",
+      images: [
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141640/products/trsaaq2dprd1aytthm2s.jpg",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141642/products/w1qgno9uachw2tmcuwdd.webp",
+      ],
+      path: "/category/Dress",
+    },
+    {
       name: "Shoe",
       images: [
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711873017/products/yrldavvbleswf2fozlex.jpg",
-        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1711874764/products/plfymvcula6ujq14ouph.webp",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141254/products/hvmdzgltwdn5jtavki0u.jpg",
+        "https://res.cloudinary.com/dfbo1ecn9/image/upload/v1712141256/products/qvuvnbigjr0fxvag6abd.jpg",
       ],
       path: "/category/Shoe",
     },
@@ -227,38 +235,50 @@ const handleShowMorestar = () => {
                 </button>
           <div className="home-line-between"></div>
 
-          <h2 style={getStyle()}>
-            Danh Mục Sản Phẩm
-          </h2>
-          <div
-            className="categories-container"
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              marginBottom: "20px",
-            }}
-          >
-            {categories.map((category, index) => (
-              <div
-                key={index}
-                onClick={() => navigate(category.path)}
-                style={{ cursor: "pointer", flex: 1, padding: "10px" }}
-              >
-                <p className="category">{category.name}</p>
-                <img
-                  src={category.images[currentImageIndex]}
-                  alt={category.name}
-                  style={{
-                    marginLeft:"125px",
-                    marginRight:"-120px",
-                    width: "80%",
-                    height: "400px",
-                    
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+          {/* Other parts of your component remain unchanged */}
+
+<h2 style={getStyle()}>
+  Danh Mục Sản Phẩm
+</h2>
+<div
+  className="categories-container"
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "20px",
+    margin: "0 auto",
+    maxWidth: "1200px", // Adjust this value according to your layout's maximum width
+    marginBottom: "20px",
+  }}
+>
+  {categories.map((category, index) => (
+    <div
+      key={index}
+      onClick={() => navigate(category.path)}
+      style={{
+        cursor: "pointer",
+        padding: "10px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center", // Center align the content for each category box
+      }}
+    >
+      <p className="category" style={{ marginBottom: "10px" }}>{category.name}</p>
+      <img
+        src={category.images[currentImageIndex]}
+        alt={category.name}
+        style={{
+          width: "100%", // Make images take full width of the container
+          height: "400px", // Set a fixed height for uniformity, adjust as needed
+          objectFit: "cover", // Ensure the images cover the area without distorting aspect ratio
+        }}
+      />
+    </div>
+  ))}
+</div>
+
+{/* Other parts of your component remain unchanged */}
+
           <div className="home-line-between">
             <h2 style={getStyle()}>Sản Phẩm Được Đánh Giá Cao</h2>
               {renderProductsStar()}
