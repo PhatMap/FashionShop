@@ -17,32 +17,28 @@ const Cart = () => {
 
   const removeCartItemHandler = (id) => {
     dispatch(removeItemFromCart(id));
+    dispatch(getUserCart());
   };
 
-  const increaseQty = (id, quantity, stock, size, color) => {
-    const newQty = quantity + 1;
+  const increaseQty = (index, id, size, colorName, colorHex) => {
+    let newQty = cartItems[index].quantity + 1;
 
-    if (newQty > stock) return;
-    dispatch(addItemToCart(id, newQty, size, color));
+    dispatch(addItemToCart(id, newQty, size, colorName, colorHex));
+    dispatch(getUserCart());
   };
 
-  const decreaseQty = (id, quantity, size, color) => {
-    const newQty = quantity - 1;
+  const decreaseQty = (index, id, size, colorName, colorHex) => {
+    let newQty = cartItems[index].quantity - 1;
 
-    if (newQty <= 0) return;
-
-    dispatch(addItemToCart(id, newQty, size, color));
+    dispatch(addItemToCart(id, newQty, size, colorName, colorHex));
+    dispatch(getUserCart());
   };
 
   const checkoutHandler = () => {
     history("/login?redirect=/shipping");
   };
 
-  useEffect(() => {
-    if (cartItems) {
-      dispatch(getUserCart());
-    }
-  }, [dispatch, cartItems]);
+  useEffect(() => {}, [dispatch]);
 
   return (
     <Fragment>
@@ -58,7 +54,7 @@ const Cart = () => {
 
             <div className="row d-flex justify-content-between">
               <div className="col-12 col-lg-8">
-                {cartItems.map((item) => (
+                {cartItems.map((item, index) => (
                   <Fragment key={item.product}>
                     <hr />
 
@@ -88,7 +84,7 @@ const Cart = () => {
                         </div>
 
                         <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                          <p id="card_item_price">{item.color}</p>
+                          <p id="card_item_price">{item.color.colorName}</p>
                         </div>
 
                         <div className="col-4 col-lg-3 mt-4 mt-lg-0">
@@ -97,10 +93,11 @@ const Cart = () => {
                               className="btn btn-danger minus"
                               onClick={() =>
                                 decreaseQty(
+                                  index,
                                   item.product,
-                                  item.quantity,
                                   item.size,
-                                  item.color
+                                  item.color.colorName,
+                                  item.color.colorHex
                                 )
                               }
                             >
@@ -118,11 +115,11 @@ const Cart = () => {
                               className="btn btn-primary plus"
                               onClick={() =>
                                 increaseQty(
+                                  index,
                                   item.product,
-                                  item.quantity,
-                                  item.stock,
                                   item.size,
-                                  item.color
+                                  item.color.colorName,
+                                  item.color.colorHex
                                 )
                               }
                             >

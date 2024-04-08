@@ -6,6 +6,9 @@ import {
   SAVE_SHIPPING_INFO,
   LOAD_CART_ITEMS_SUCCESS,
   LOAD_CART_ITEMS_FAIL,
+  EMPTY_CART_SUCCESS,
+  EMPTY_CART_FAIL,
+  UPDATE_QUANTITY_SUCCESS,
 } from "../constants/cartConstants";
 
 export const cartReducer = (
@@ -57,6 +60,27 @@ export const cartReducer = (
       return {
         ...state,
         error: action.payload, // Structure error payload as an object
+      };
+
+    case EMPTY_CART_SUCCESS:
+      return {
+        ...state,
+        success: action.payload.data.success,
+        error: action.payload.data.error,
+      };
+
+    case EMPTY_CART_FAIL:
+      return {
+        ...state,
+        success: action.payload.data.success,
+        error: action.payload.data.error,
+      };
+
+    case UPDATE_QUANTITY_SUCCESS:
+      return {
+        ...state,
+        success: action.payload.data.success,
+        error: action.payload.data.error,
       };
 
     default:

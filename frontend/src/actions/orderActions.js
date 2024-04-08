@@ -21,6 +21,12 @@ import {
   ORDER_DETAILS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/orderConstants";
+import {
+  EMPTY_CART_FAIL,
+  EMPTY_CART_SUCCESS,
+  LOAD_CART_ITEMS_FAIL,
+  LOAD_CART_ITEMS_SUCCESS,
+} from "../constants/cartConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -38,9 +44,34 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: CREATE_ORDER_SUCCESS,
       payload: data,
     });
+
+    const result = await axios.put("/api/v1/cart/empty");
+    dispatch({
+      type: EMPTY_CART_SUCCESS,
+      payload: result,
+    });
+
+    try {
+      const response = await axios.get(`/api/v1/cart/me`);
+      const { cartItems } = response.data;
+
+      dispatch({
+        type: LOAD_CART_ITEMS_SUCCESS,
+        payload: cartItems,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOAD_CART_ITEMS_FAIL,
+        payload: error.response.data.message,
+      });
+    }
   } catch (error) {
     dispatch({
-      type: CREATE_ORDER_FAIL,
+      type: EMPTY_CART_FAIL,
+      payload: error.response.data.message,
+    });
+    dispatch({
+      type: EMPTY_CART_FAIL,
       payload: error.response.data.message,
     });
   }

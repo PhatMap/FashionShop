@@ -7,6 +7,7 @@ import {
   SAVE_SHIPPING_INFO,
   LOAD_CART_ITEMS_SUCCESS,
   LOAD_CART_ITEMS_FAIL,
+  UPDATE_QUANTITY_SUCCESS,
 } from "../constants/cartConstants";
 
 export const getUserCart = () => async (dispatch, getState) => {
@@ -31,17 +32,22 @@ export const addItemToCart =
     try {
       const { data } = await axios.get(`/api/v1/product/${id}`);
 
-      // Check if data and data.product are truthy
+      // if (quantity > data.product.stock || data.product.stock <= 0) {
+      //   return dispatch({
+      //     type: ADD_TO_CART_FAIL,
+      //     payload: "Product is out of stock",
+      //   });
+      // }
+
       if (data && data.product) {
-        // Construct item object
         const item = {
           product: data.product._id,
           name: data.product.name,
           price: data.product.price,
-          image: data.product.images[0] ? data.product.images[0].url : "", // Check if images[0] exists
+          image: data.product.images[0] ? data.product.images[0].url : "",
           quantity,
-          sizes: size,
-          colors: {
+          size: size,
+          color: {
             colorName,
             colorHex,
           },
