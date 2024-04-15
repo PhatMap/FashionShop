@@ -215,13 +215,12 @@ footer {
   position: relative;
   font-family: FontAwesome;
   color: #fdcc0d;
-  margin-Left:"30px";
-
+  margin-left: "30px";
 }
 
 .rating-outer::before {
   content: "\f006 \f006 \f006 \f006 \f006";
-  margin-Left:"30px"
+  margin-left: "30px";
 }
 
 .rating-inner {
@@ -255,11 +254,10 @@ footer {
   transform: scale(1.05); /* Phóng to ảnh khi di chuột vào */
 }
 
-
 /* Product Details Page */
 .product-thumbnails {
   margin-right: 0px;
-  
+
   margin-top: 5rem;
   display: flex;
   flex-direction: column; /* Sắp xếp các ảnh theo chiều dọc */
@@ -267,7 +265,6 @@ footer {
   gap: 10px; /* Khoảng cách giữa các ảnh */
   margin-left: 10px; /* Khoảng cách với lề bên trái */
   /* Có thể thêm padding nếu cần */
-  
 }
 
 .product-thumbnail {
@@ -279,7 +276,6 @@ footer {
   opacity: 0.6;
   transition: opacity 0.2s ease-in-out;
   transition: border 0.2s ease-in-out;
-  
 }
 .product-thumbnail.active {
   border: 2px solid #333; /* Thêm border khi ảnh đang được hover */
@@ -288,8 +284,6 @@ footer {
 .product-thumbnail:hover {
   opacity: 1;
 }
-
-
 
 #product_id {
   color: grey;
@@ -331,7 +325,6 @@ footer {
 #product_image {
   margin-top: 5rem;
   margin-left: -80px;
- 
 }
 
 /* Loader */
@@ -371,7 +364,47 @@ footer {
     transform: rotate(360deg);
   }
 }
+/* Home */
+.Test {
+  height: 100vh;
+}
+.homebg {
+  position: relative;
+  display: flex;
+  z-index: -1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: gainsboro;
+}
 
+.homebg span {
+  top: 50vh;
+  width: 30px;
+  height: 30px;
+  background: #4fc3dc;
+  margin: 0 4px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #4fc3dc, 0 0 50px #4fc3dc;
+  animation: animate 15s linear infinite;
+  animation-duration: calc(125s / var(--i));
+}
+
+@keyframes animate {
+  0% {
+    transform: translateY(100vh) scale(0);
+  }
+  100% {
+    transform: translateY(-10vh) scale(1);
+    opacity: 0;
+  }
+}
+.homebg span:nth-child(even) {
+  background: #ff2d75;
+  box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #ff2d75, 0 0 50px #ff2d75;
+}
 /* Category */
 .menu {
   background: rgba(0, 0, 0, 0.5);
