@@ -51,13 +51,14 @@ const OrderDetails = () => {
 
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
-    const OrderProgressBar = ({ currentStatus }) => {
-      const steps = ['Placed', 'Order Confirmed', 'Shipped', 'Out For Delivery', 'Delivered'];
-      const currentStepIndex = steps.indexOf(currentStatus);
+
+  const OrderProgressBar = ({ currentStatus }) => {
+    const steps = ['Placed', 'Order Confirmed', 'Shipped', 'Out For Delivery', 'Delivered'];
+    const currentStepIndex = steps.indexOf(currentStatus);
     
-      return (
-        <div className="order-progress-container">
-          <div className="progress-track"></div> {/* Thêm phần tử này để tạo thanh ngang */}
+    return (
+      <div className="order-progress-container">
+        <div className="progress-track"></div> {/* Thêm phần tử này để tạo thanh ngang */}
           {steps.map((step, index) => (
             <div key={step} className={`progress-step ${index <= currentStepIndex ? 'active' : ''}`}>
               {index <= currentStepIndex ? (
