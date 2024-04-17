@@ -79,9 +79,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-
         <div className="container container-fluid">
-          <BackGround/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaBars } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,14 +57,39 @@ const Header = () => {
     }
   }, [dispatch, user]);
 
+  const [isSticky, setIsSticky] = useState(false);
+  const prevScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < prevScrollY.current) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+
+      prevScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <Fragment>
       <ToastContainer />
-      <nav className="navbar row">
+      <nav
+        className="navbar row"
+        style={isSticky ? { position: "sticky", top: "0", zIndex: "1000" } : {}}
+      >
         <div className="col-12 col-md-3 ">
           <div className="navbar-brand logo-container">
             <Link to="/">
-              <img src="/images/a.png" alt="No logo" />
+              <img src="/images/vita.png" alt="No logo" />
             </Link>
           </div>
 
@@ -76,7 +101,7 @@ const Header = () => {
             onClick={handleClick}
             className="menu-button"
           >
-            <FaBars style={{ fontSize: "30px", color: "#333" }} /> Category
+            <FaBars style={{ fontSize: "30px", color: "white" }} />
           </button>
           <Menu
             className="menu"
@@ -102,9 +127,7 @@ const Header = () => {
             ))}
           </Menu>
         </div>
-        <div className="col-12 col-md-6 mt-2 mt-md-0">
-          <Search />
-        </div>
+        <Search />
 
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
           {/* Nút Shop */}

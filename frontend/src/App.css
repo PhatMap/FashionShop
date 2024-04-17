@@ -76,13 +76,15 @@ nav {
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  border: none;
   cursor: pointer;
 }
 
 #login_btn:hover,
 #view_btn:hover {
-  background-color: #ffc800;
+  background-color: black;
+  color: white;
+  border-width: 1px;
+  border-color: white;
 }
 
 #cart {
@@ -377,7 +379,7 @@ footer {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: gainsboro;
+  background: whitesmoke;
 }
 
 .homebg span {
@@ -411,14 +413,24 @@ footer {
 }
 
 .menu-button {
-  background-color: white;
+  background: none;
+  border-radius: 10%;
+  border-color: white;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-button:hover {
+  border-width: 4px;
 }
 
 /* Footer */
 
 .footer-container {
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-color: black;
 }
 
 /* Cart */
@@ -593,6 +605,35 @@ footer {
 }
 
 /* Header User Profile */
+.btn-find {
+  transition: transform 0.5s ease-in-out;
+}
+
+.btn-find:hover {
+  transform: rotate(360deg);
+}
+
+.remove-btn {
+  position: absolute;
+  right: 350px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  color: red; /* or any other color you prefer */
+}
+
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
 .avatar-nav {
   margin-right: 0.6rem;
