@@ -52,6 +52,32 @@ const OrderDetails = () => {
   const isPaid =
     paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
+  const OrderProgressBar = ({ currentStatus }) => {
+    const steps = ['Placed', 'Order Confirmed', 'Shipped', 'Out For Delivery', 'Delivered'];
+    const currentStepIndex = steps.indexOf(currentStatus);
+    
+    return (
+      <div className="order-progress-container">
+        <div className="progress-track"></div> {/* Thêm phần tử này để tạo thanh ngang */}
+          {steps.map((step, index) => (
+            <div key={step} className={`progress-step ${index <= currentStepIndex ? 'active' : ''}`}>
+              {index <= currentStepIndex ? (
+                <span className="checkmark">&#10003;</span>
+              ) : (
+                <span className="step-number">{index + 1}</span>
+              )}
+              <div className="step-label">{step}</div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+    
+    
+    
+    
+    
+    
   return (
     <Fragment>
       <ToastContainer />
@@ -64,6 +90,11 @@ const OrderDetails = () => {
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8 mt-5 order-details">
               <h1 className="my-5">Order # {order._id}</h1>
+
+
+              <OrderProgressBar currentStatus={orderStatus} />
+
+            
 
               <h4 className="mb-4">Shipping Info</h4>
               <p>
