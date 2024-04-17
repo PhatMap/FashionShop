@@ -41,6 +41,7 @@ import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ProductReviews from "./components/admin/ProductReviews";
 import Category from "./components/product/Category";
+import Color from './components/product/Color'; 
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import { loadUser } from "./actions/userActions";
 import { useSelector } from "react-redux";
@@ -83,6 +84,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/color/:color" element={<Color />} />
             <Route path="/search/:keyword" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/category/:category" element={<Category />} />

@@ -11,59 +11,71 @@ import "rc-slider/assets/index.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductsByCategory } from "../../actions/productActions";
 
-const Category = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [price, setPrice] = useState([1, 1000]);
-  const [rating, setRating] = useState(0);
 
-  const dispatch = useDispatch();
+const Color = () => {
+    const { color: urlColor } = useParams(); // Lấy màu từ URL và đổi tên biến thành urlColor
+    const [selectedColor, setSelectedColor] = useState(urlColor || ""); // State để lưu màu được chọn
+    const colors = ["black", "white", "red", "blue", "green", "yellow", "orange", "purple", "pink", "gray"]; // Danh sách màu
+    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [price, setPrice] = useState([1, 1000]);
+    const [rating, setRating] = useState(0);
+    const [category, setCategory] = useState("");
+    const [cols, setCols] = useState(4); // Số cột cho sản phẩm
+    const dispatch = useDispatch();
+    const {
+      loading,
+      products: allProducts,
+      productsCount,
+      resPerPage,
+      filteredProductsCount,
+      error,
+    } = useSelector(state => state.products);
 
-  const { loading, products, error, productsCount, resPerPage, filteredProductsCount } = useSelector((state) => state.category);
-  const categories = [  
-          "Trousers",
-          "Shirt",
-          "Dress",
-          "Shoe",
-          "Belt",];
-
-  const { keyword, category } = useParams();
-  const navigate = useNavigate();
-
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const categories = [  
+      "Trousers",
+      "Shirt",
+      "Dress",
+      "Shoe",
+      "Belt",];
   function setCurrentPageNo(pageNumber) {
-    setCurrentPage(pageNumber);
+  setCurrentPage(pageNumber);
   }
-
-  useEffect(() => {
-    dispatch(getProductsByCategory(keyword, currentPage, price, category, rating));
-    if (error) {
-      toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }, [dispatch, keyword, currentPage, price, category, rating, error]);
-
   const handleCategoryClick = (selectedCategory) => {
-    navigate(`/category/${selectedCategory}`);
+  navigate(`/category/${selectedCategory}`);
   };
-
   const handleStarClick = (selectedRating) => {
-    setRating(selectedRating);
+  setRating(selectedRating);
   };
-  const [color, setColor] = useState(""); // State để lưu màu được chọn
-const colors = ["black", "white", "red", "blue", "green", "yellow", "orange", "purple", "pink", "gray"]; // Danh sách màu
 
-const handleColorChange = (selectedColor) => {
-  setColor(selectedColor);
-  navigate(`/shop/color/${selectedColor}`); // Chuyển hướng người dùng
-};
-  
+
+  // Cập nhật danh sách sản phẩm khi màu được chọn thay đổi
+  useEffect(() => {
+    if (!loading && allProducts && selectedColor) {
+      const matchedProducts = allProducts.filter(product =>
+        product.colors && product.colors.colorName &&
+        product.colors.colorName.toLowerCase() === selectedColor.toLowerCase()
+      );
+      setFilteredProducts(matchedProducts);
+    }
+  }, [allProducts, selectedColor, loading]);
+
+  // Cập nhật màu được chọn khi URL thay đổi
+  useEffect(() => {
+    if (urlColor && urlColor !== selectedColor) {
+      setSelectedColor(urlColor);
+      navigate(`/Shop/color/${urlColor}`);
+    }
+  }, [urlColor, navigate, selectedColor]);
+
+  // Xử lý khi màu được chọn thay đổi
+  const handleColorChange = (newColor) => {
+    setSelectedColor(newColor);
+    navigate(`/Shop/color/${newColor}`); // Đổi URL để phản ánh màu mới được chọn
+  };
+
+
 
   return (
     <Fragment>
@@ -73,6 +85,20 @@ const handleColorChange = (selectedColor) => {
       ) : (
         <Fragment>
           <MetaData title={"Real comfy"} />
+          <h1
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                color: "#333",
+                textAlign: "center",
+                textTransform: "uppercase",
+                margin: "20px 0",
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              Selected Color: {selectedColor ? selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1) : "None"}
+            </h1>
+
           <h1
             id="products_heading"
             style={{
@@ -148,7 +174,7 @@ const handleColorChange = (selectedColor) => {
                   <h4 className="mb-3" style={{ marginTop: '20px', marginBottom: '10px', fontSize: '18px', fontWeight: 'bold',marginLeft:"5px" }}>Choose a color:</h4>
                     <select
                         id="color-select"
-                        value={color}
+                        value={colors}
                         onChange={(e) => handleColorChange(e.target.value)}
                         style={{
                             width: '200px',
@@ -171,11 +197,26 @@ const handleColorChange = (selectedColor) => {
               </div>
 
               <div className="col-md-9">
-                <div className="row">
-                  {products.map((product) => (
-                    <Product key={product._id} product={product} col={4} />
-                  ))}
-                </div>
+              <div className="row">
+              {filteredProducts.length > 0 ? filteredProducts.map(product => (
+                <Product key={product._id} product={product} col={4}/>
+              ))  : (
+                <h1
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "#333",
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    marginLeft: "200px",
+                    color: "red",
+                    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+                  }}
+                >
+                  No products found for this color.
+                </h1>
+              )}
+            </div>
               </div>
               
             </div>
@@ -203,4 +244,4 @@ const handleColorChange = (selectedColor) => {
   );
 };
 
-export default Category;
+export default Color;

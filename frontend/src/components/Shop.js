@@ -21,8 +21,6 @@ const Shop = () => {
   const [cols, setCols] = useState(4); // Số cột cho sản phẩm
 
   const categories = ["Trousers", "Shirt", "Dress", "Shoe", "Belt"];
-
-  // Sử dụng hook useNavigate để thực hiện chuyển hướng
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -96,6 +94,17 @@ useEffect(() => {
     setRating(5); // chỉ hiển thị sản phẩm có 5 sao
   }
 }, [location]);
+
+
+const [color, setColor] = useState(""); // State để lưu màu được chọn
+const colors = ["black", "white", "red", "blue", "green", "yellow", "orange", "purple", "pink", "gray"]; // Danh sách màu
+
+const handleColorChange = (selectedColor) => {
+  console.log("Color selected: ", selectedColor);
+  setColor(selectedColor);
+  navigate(`/shop/color/${selectedColor}`); // Đảm bảo rằng đây là URL và route đúng
+};
+
   
 
   return (
@@ -200,6 +209,28 @@ useEffect(() => {
                       ))}
                     </ul>
                   </div>
+                  <div className="mt-5">
+                    <hr style={{ border: '1px solid #ccc' }} />
+                    <h4 className="mb-3" style={{ marginTop: '20px', marginBottom: '10px' }}>Choose a color:</h4>
+                    <select
+                        id="color-select"
+                        value={color}
+                        onChange={(e) => handleColorChange(e.target.value)}
+                        style={{
+                            width: '200px',
+                            height: '40px',
+                            borderRadius: '5px',
+                            borderColor: '#ccc',
+                            marginBottom: '20px'
+                        }}
+                    >
+                        <option value="">Select a Color</option>
+                        {colors.map((color, index) => (
+                            <option key={index} value={color}>{color}</option>
+                        ))}
+                    </select>
+                </div>
+
                 </div>
               </div>
               <div className="col-md-9">
