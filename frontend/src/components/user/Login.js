@@ -9,6 +9,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login, clearErrors } from "../../actions/userActions";
 
+import LoginButton from "./GoogleLogin";
+
+// import { gapi } from "gapi-script";
+
+// const clientId =
+//   "629274107705-pppj24d559dgmpqcrkubgfqnl0hr9j4p.apps.googleusercontent.com";
+
 const Login = () => {
   const history = useNavigate();
   const location = useLocation();
@@ -48,6 +55,17 @@ const Login = () => {
     dispatch(login(email, password));
   };
 
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: clientId,
+  //       scope: "",
+  //     });
+  //   }
+
+  //   gapi.load("client:auth2", start);
+  // });
+
   return (
     <Fragment>
       <ToastContainer />
@@ -57,7 +75,7 @@ const Login = () => {
         <Fragment>
           <MetaData title={"Login"} />
 
-          <div className="row wrapper">
+          <div className="row wrapper" style={{ marginBottom: "100px" }}>
             <div className="col-10 col-lg-5">
               <form className="shadow-lg" onSubmit={submitHandler}>
                 <h1 className="mb-3">Login</h1>
@@ -87,14 +105,25 @@ const Login = () => {
                   Forgot Password?
                 </Link>
 
-                <button
-                  id="login_button"
-                  type="submit"
-                  className="btn btn-block py-3"
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  LOGIN
-                </button>
-
+                  <button
+                    id="login_button"
+                    type="submit"
+                    className="btn btn-block py-3"
+                    style={{ marginBottom: "10px" }}
+                  >
+                    LOGIN
+                  </button>
+                  <LoginButton />
+                </div>
                 <Link to="/register" className="float-right mt-3">
                   New User?
                 </Link>

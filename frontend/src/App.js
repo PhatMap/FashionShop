@@ -52,6 +52,7 @@ import axios from "axios";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import BackGround from "./components/layout/BackGround";
+import GoogleLogin from "react-google-login";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");

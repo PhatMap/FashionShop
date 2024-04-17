@@ -22,7 +22,7 @@ const Home = () => {
   const [fiveStarProducts, setFiveStarProducts] = useState([]);
 
   const dispatch = useDispatch();
-  
+
   const {
     loading,
     products,
@@ -52,9 +52,7 @@ const Home = () => {
 
   const renderProducts = () => {
     return (
-      <div
-        className="row"
-      >
+      <div className="row">
         {products.slice(0, 4).map((product) => (
           <Product
             key={product._id}
@@ -62,49 +60,42 @@ const Home = () => {
             col={cols}
             className="product-item"
             style={{ width: "70px", marginLeft: "-150px" }}
-            
           />
         ))}
       </div>
     );
   };
 
-
   useEffect(() => {
-    if(products.length > 0) {
+    if (products.length > 0) {
       const topRatedProducts = products
         .filter((p) => p.ratings >= 4.5)
-        
-        .slice(0, 4); 
-    
+
+        .slice(0, 4);
+
       setFiveStarProducts(topRatedProducts);
     }
   }, [products]);
-  
-  
 
-const renderProductsStar = () => {
-  return (
-    <div className="row">
-      {fiveStarProducts.map((product) => (
-        <Product
-          key={product._id}
-          product={product}
-          col={cols} 
-          className="product-item"
-          style={{ width: "70px", marginLeft: "-150px" }}
-        />
-      ))}
-    </div>
-  );
-};
+  const renderProductsStar = () => {
+    return (
+      <div className="row">
+        {fiveStarProducts.map((product) => (
+          <Product
+            key={product._id}
+            product={product}
+            col={cols}
+            className="product-item"
+            style={{ width: "70px", marginLeft: "-150px" }}
+          />
+        ))}
+      </div>
+    );
+  };
 
-const handleShowMorestar = () => {
-  navigate("/shop", { state: { fromFiveStar: true } });
-};
-  
-  
-  
+  const handleShowMorestar = () => {
+    navigate("/shop", { state: { fromFiveStar: true } });
+  };
 
   const [backgroundImages, setBackgroundImages] = useState([
     "../images/background_image_1.jpg",
@@ -183,7 +174,6 @@ const handleShowMorestar = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   const getStyle = () => ({
     fontSize: "24px",
     fontWeight: "bold",
@@ -191,7 +181,7 @@ const handleShowMorestar = () => {
     textAlign: "center",
     textTransform: "uppercase",
     margin: "40px 0",
-    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)"
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
   });
 
   return (
@@ -215,87 +205,88 @@ const handleShowMorestar = () => {
               textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <div>
-              {/* Hiển thị hình ảnh từ mảng backgroundImages */}
-              <img
-                src={backgroundImages[currentBackgroundIndex]}
-                alt="Background Image"
-                style={{ width: "100%", maxHeight: "500px" }}
-              />
-            </div>
-            <h1
-              id="products_heading"
-              style={getStyle()} ></h1>Sản Phẩm Mới Nhất</h1>
-                <section id="products">{productsGrid}</section>
-                <button
-                  onClick={handleShowMore}
-                  style={{ float: "right", marginTop: "10px" }}
-                >
-                  Show More
-                </button>
+            Sản Phẩm Mới Nhất
+          </h1>
+          <div>
+            {/* Hiển thị hình ảnh từ mảng backgroundImages */}
+            <img
+              src={backgroundImages[currentBackgroundIndex]}
+              alt="Background Image"
+              style={{ width: "100%", maxHeight: "500px" }}
+            />
+          </div>
+          <h1 id="products_heading" style={getStyle()}></h1>
+          <section id="products">{productsGrid}</section>
+          <button
+            onClick={handleShowMore}
+            style={{ float: "right", marginTop: "10px" }}
+          >
+            Show More
+          </button>
           <div className="home-line-between"></div>
 
           {/* Other parts of your component remain unchanged */}
 
-<h2 style={getStyle()}>
-  Danh Mục Sản Phẩm
-</h2>
-<div
-  className="categories-container"
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "20px",
-    margin: "0 auto",
-    maxWidth: "1200px", // Adjust this value according to your layout's maximum width
-    marginBottom: "20px",
-  }}
->
-  {categories.map((category, index) => (
-    <div
-      key={index}
-      onClick={() => navigate(category.path)}
-      style={{
-        cursor: "pointer",
-        padding: "10px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center", // Center align the content for each category box
-      }}
-    >
-      <p className="category" style={{ marginBottom: "10px" }}>{category.name}</p>
-      <img
-        src={category.images[currentImageIndex]}
-        alt={category.name}
-        style={{
-          width: "100%", // Make images take full width of the container
-          height: "400px", // Set a fixed height for uniformity, adjust as needed
-          objectFit: "cover", // Ensure the images cover the area without distorting aspect ratio
-        }}
-      />
-    </div>
-  ))}
-</div>
+          <h2 style={getStyle()}>Danh Mục Sản Phẩm</h2>
+          <div
+            className="categories-container"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "20px",
+              margin: "0 auto",
+              maxWidth: "1200px", // Adjust this value according to your layout's maximum width
+              marginBottom: "20px",
+            }}
+          >
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                onClick={() => navigate(category.path)}
+                style={{
+                  cursor: "pointer",
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center", // Center align the content for each category box
+                }}
+              >
+                <p className="category" style={{ marginBottom: "10px" }}>
+                  {category.name}
+                </p>
+                <img
+                  src={category.images[currentImageIndex]}
+                  alt={category.name}
+                  style={{
+                    width: "100%", // Make images take full width of the container
+                    height: "400px", // Set a fixed height for uniformity, adjust as needed
+                    objectFit: "cover", // Ensure the images cover the area without distorting aspect ratio
+                  }}
+                />
+              </div>
+            ))}
+          </div>
 
-{/* Other parts of your component remain unchanged */}
+          {/* Other parts of your component remain unchanged */}
 
           <div className="home-line-between">
             <h2 style={getStyle()}>Sản Phẩm Được Đánh Giá Cao</h2>
-              {renderProductsStar()}
-                <button
-                  onClick={handleShowMorestar} 
-                  style={{ float: "right", marginTop: "10px" ,marginBottom:"50px"}}
-                >
-                  Show More
-                </button>
-             </div>
-             <div className="home-page-container" style={{ marginBottom: "100px" }}>
-              
-            </div>
-
-          
-
-  
+            {renderProductsStar()}
+            <button
+              onClick={handleShowMorestar}
+              style={{
+                float: "right",
+                marginTop: "10px",
+                marginBottom: "50px",
+              }}
+            >
+              Show More
+            </button>
+          </div>
+          <div
+            className="home-page-container"
+            style={{ marginBottom: "100px" }}
+          ></div>
         </Fragment>
       )}
     </Fragment>

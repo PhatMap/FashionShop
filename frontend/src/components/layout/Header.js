@@ -11,6 +11,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Popper } from "@mui/material";
 import { getUserCart } from "../../actions/cartActions";
+import LogoutButton from "../user/GoogleLogout";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,7 +35,9 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user, loading, isGoogleLoggedIn } = useSelector(
+    (state) => state.auth
+  );
   const { cartItems } = useSelector((state) => state.cart);
   const categories = ["Trousers", "Shirt", "Dress", "Shoe", "Belt"];
 
@@ -197,7 +200,10 @@ const Header = () => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <figure className="avatar avatar-nav">
+                <figure
+                  className="avatar avatar-nav"
+                  style={{ background: "white" }}
+                >
                   <img
                     src={user.avatar && user.avatar.url}
                     alt={user && user.name}
@@ -222,13 +228,17 @@ const Header = () => {
                 <Link className="dropdown-item" to="/me">
                   Profile
                 </Link>
-                <Link
-                  className="dropdown-item text-danger"
-                  to="/"
-                  onClick={logoutHandler}
-                >
-                  Logout
-                </Link>
+                {isGoogleLoggedIn ? (
+                  <LogoutButton />
+                ) : (
+                  <Link
+                    className="dropdown-item text-danger"
+                    to="/"
+                    onClick={logoutHandler}
+                  >
+                    Logout
+                  </Link>
+                )}
               </div>
             </div>
           ) : (

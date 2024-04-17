@@ -22,7 +22,7 @@ exports.addToCart = catchAsyncErrors(async (req, res, next) => {
     if (existingItemIndex !== -1) {
       cart.cartItems[existingItemIndex].quantity = cartItems[0].quantity;
     } else {
-      cart.cartItems.push(...cartItems[0]);
+      cart.cartItems.push(...cartItems);
     }
 
     await cart.save();

@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -36,6 +37,12 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   CLEAR_ERRORS,
+  GOOGLE_LOGIN_SUCCESS,
+  GOOGLE_LOGIN_FAIL,
+  GOOGLE_LOGIN_REQUEST,
+  GOOGLE_LOGOUT_REQUEST,
+  GOOGLE_LOGOUT_FAIL,
+  GOOGLE_LOGOUT_SUCCESS,
 } from "../constants/userConstants";
 
 // Login
@@ -66,6 +73,40 @@ export const login = (email, password) => async (dispatch) => {
     });
   }
 };
+
+// Login Google
+export const googleLogin =
+  (email, name, avatar, googleId) => async (dispatch) => {
+    try {
+      dispatch({ type: GOOGLE_LOGIN_REQUEST });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/v1/googleLogin",
+        { email, name, avatar, googleId },
+        config
+      );
+      console.log(
+        "Dispatching googleLogin action with email:",
+        data.user.email
+      );
+
+      dispatch({
+        type: GOOGLE_LOGIN_SUCCESS,
+        payload: data.user,
+      });
+    } catch (error) {
+      dispatch({
+        type: GOOGLE_LOGIN_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // Register user
 export const register = (userData) => async (dispatch) => {
@@ -230,6 +271,26 @@ export const logout = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOGOUT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Logout user
+export const googleLogout = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: GOOGLE_LOGOUT_REQUEST,
+    });
+
+    await axios.get("/api/v1/googleLogout");
+
+    dispatch({
+      type: GOOGLE_LOGOUT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: GOOGLE_LOGOUT_FAIL,
       payload: error.response.data.message,
     });
   }

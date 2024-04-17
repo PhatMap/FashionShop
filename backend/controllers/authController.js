@@ -50,6 +50,41 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+const generateRandomPassword = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters.charAt(randomIndex);
+  }
+
+  return password;
+};
+
+exports.googleLoginUser = catchAsyncErrors(async (req, res, next) => {
+  const { email, name, avatar, googleId } = req.body;
+
+  let user = await User.findOne({ email });
+
+  const password = generateRandomPassword();
+
+  if (!user) {
+    user = await User.create({
+      name,
+      email,
+      password,
+      avatar: {
+        public_id: googleId,
+        url: avatar,
+      },
+    });
+  }
+
+  sendToken(user, 200, res);
+});
+
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   console.log("forgotPassword");
@@ -180,6 +215,18 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Logged out",
+  });
+});
+
+exports.googleLogout = catchAsyncErrors(async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Google logged out",
   });
 });
 
