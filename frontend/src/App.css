@@ -30,6 +30,7 @@ nav {
   background: black;
   padding: 1rem 1rem;
 }
+
 .login-btn {
   background-color: #e3e3e3;
   color: #2e2e2e;
@@ -435,18 +436,21 @@ footer {
 
 /* Cart */
 .cart {
-  background-color: #f3fdffdd;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
 }
 
 .cart-MenuItem {
-  font-size: 10px;
   display: flex;
+  font-size: 10px;
+  background: transparent;
+  flex-basis: 100%;
+  z-index: 10000;
 }
 
 .cart-MenuItem-container {
+  color: black;
   margin-left: 5px;
   display: flex;
   flex-direction: column;
@@ -628,7 +632,6 @@ footer {
   color: red; /* or any other color you prefer */
 }
 
-
 .sticky {
   position: sticky;
   top: 0;
@@ -741,15 +744,13 @@ footer {
 .progress-step {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  
+  align-items: center;
 }
 
 .checkmark,
 .step-number {
-  
   border: 2px solid #f70000;
-  left: 0px; 
+  left: 0px;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -782,22 +783,19 @@ footer {
 }
 
 .step-label {
- 
   font-size: 0.8rem;
   color: #6a1010;
   text-align: center; /* Căn giữa chữ ngang */
   width: 100%; /* Đảm bảo nhãn chiếm toàn bộ chiều rộng */
-  margin-top: 8px
-
+  margin-top: 8px;
 }
-
 
 .order-progress-container {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;  
+  width: 100%;
   left: -50px;
   margin-bottom: 50px;
 }
@@ -812,12 +810,10 @@ footer {
   color: grey;
   line-height: 25px;
   z-index: 1;
-  
 }
 
-
 .progress-step:not(:last-child):after {
-  content: '';
+  content: "";
   position: absolute;
   width: calc(100% - 100px);
   height: 2px;
@@ -837,13 +833,11 @@ footer {
   background-color: #f8eaf6; /* Màu nền */
 }
 
-
 .active:not(:last-child):after {
   background-color: rgb(32, 154, 199);
 }
 
 .progress-label {
-  
   margin-top: 8px;
   font-size: 14px;
   color: rgb(244, 228, 10);
@@ -852,7 +846,6 @@ footer {
 .active .progress-label {
   color: blue;
 }
-
 
 .order-confirm p,
 .order-details p {
@@ -1062,4 +1055,231 @@ ul.CTAs a {
 .name-deleteBtn-container {
   display: flex;
   justify-content: space-between;
+}
+
+/* Header.js */
+.Header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: black;
+  backdrop-filter: blur(10px);
+}
+
+.Header-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-basis: 100%;
+}
+.Header-container-left {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+.Header-shop-link {
+  color: white;
+  font-family: "Space Mono", monospace;
+  font-size: 25px;
+  text-decoration: none;
+  width: 70px;
+}
+
+.Header-shop-link:hover {
+  display: flex;
+  background: white;
+  color: black;
+  border-radius: 25px;
+  width: 70px;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Mono", monospace;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.Header-shop-link.active {
+  display: flex;
+  background: white;
+  color: black;
+  border-radius: 25px;
+  width: 70px;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Mono", monospace;
+  font-size: 25px;
+}
+
+.Header-cart-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.Header-cart {
+  color: white;
+  font-family: "Space Mono", monospace;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.Header-count {
+  background-color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: back;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Header-login {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  font-family: "Space Mono", monospace;
+  font-size: 20px;
+}
+
+.Header-login:hover {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  font-family: "Space Mono", monospace;
+  font-size: 20px;
+}
+
+.Header-container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Header-container-right {
+}
+
+.Header-container-right h1 {
+  color: white;
+  font-size: 5 rem;
+  font-family: "Space Mono", monospace;
+}
+.Header-category {
+  position: relative;
+  display: inline-block;
+}
+
+.burger-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  font-size: 1.75em;
+  transform: all 0.5s;
+  cursor: pointer;
+}
+
+.burger-menu:hover {
+  background: white;
+  color: black;
+}
+
+.Header-menu-item {
+}
+.Header-menu-item:hover {
+  background: #4fc3dc;
+}
+
+.Header-cart-icon {
+  color: white;
+  font-size: 30px;
+}
+.Header-cart-icon:hover {
+  color: gray;
+}
+
+.Header-cart-items {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  border-radius: 10px;
+}
+
+/* Search.js */
+.Search-form {
+  position: relative;
+  top: 25px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 1s;
+  width: 50px;
+  height: 50px;
+  background: white;
+  box-sizing: border-box;
+  border-radius: 25px;
+  border: 4px solid white;
+}
+
+.Search-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 42.5px;
+  line-height: 30px;
+  outline: 0;
+  border: 0;
+  display: none;
+  font-size: 1em;
+  border-radius: 20px;
+  padding: 0 20px;
+}
+
+.Search-icon {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 42.5px;
+  height: 42.5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  color: black;
+  text-align: center;
+  font-size: 1.2em;
+  transform: all 0.5s;
+}
+
+.Search-form:hover {
+  width: 400px;
+  cursor: pointer;
+}
+
+.Search-form:hover .Search-input {
+  display: block;
+}
+
+.Search-form:hover .Search-icon {
+  background: black;
+  color: white;
 }
