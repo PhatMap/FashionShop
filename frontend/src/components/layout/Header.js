@@ -11,7 +11,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Popper } from "@mui/material";
 import { getUserCart } from "../../actions/cartActions";
-import LogoutButton from "../user/GoogleLogout";
 
 const Header = () => {
   const location = useLocation();
@@ -262,9 +261,7 @@ const Header = () => {
                   <Link className="dropdown-item" to="/me">
                     Profile
                   </Link>
-                  {isGoogleLoggedIn ? (
-                    <LogoutButton />
-                  ) : (
+                 
                     <Link
                       className="dropdown-item text-danger"
                       to="/"
@@ -272,7 +269,6 @@ const Header = () => {
                     >
                       Logout
                     </Link>
-                  )}
                 </div>
               </div>
             ) : (

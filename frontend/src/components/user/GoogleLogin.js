@@ -1,8 +1,9 @@
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
 import { googleLogin } from "../../actions/userActions";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const clientId =
   "629274107705-pppj24d559dgmpqcrkubgfqnl0hr9j4p.apps.googleusercontent.com";
@@ -21,33 +22,25 @@ function LoginGoogle() {
     }
   }, [dispatch, isAuthenticated, error, history, redirect]);
 
-  const onSuccess = (response) => {
-    console.log("Login success! currentUser:", response.profileObj);
+  const onSuccess = (credentialResponse) => {
+    const decoded = jwtDecode(credentialResponse.credential);
+    console.log("Login success! currentUser:", decoded);
     dispatch(
-      googleLogin(
-        response.profileObj.email,
-        response.profileObj.name,
-        response.profileObj.imageUrl,
-        response.profileObj.googleId
-      )
+      googleLogin(decoded.email, decoded.name, decoded.picture, decoded.sub)
     );
   };
 
-  const onFailure = (response) => {
-    console.log("Login failed! res", response);
+  const onFailure = (error) => {
+    console.log("Login failed! Error:", error);
   };
 
   return (
-    <div>
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login with Google"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        cookiePolicy={"single_host_origin"}
-        scope="profile email"
-      />
-    </div>
+    <GoogleLogin
+      buttonText="Login with Google"
+      onSuccess={onSuccess}
+      onFailure={onFailure}
+      cookiePolicy={"single-host-origin"}
+    />
   );
 }
 

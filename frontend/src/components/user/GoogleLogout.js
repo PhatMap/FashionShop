@@ -1,4 +1,4 @@
-import { GoogleLogout } from "react-google-login";
+import { GoogleLogout } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { googleLogout } from "../../actions/userActions";
 const clientId =
@@ -18,6 +18,24 @@ function LogoutGoogle() {
         clientId={clientId}
         buttonText="Logout"
         onLogoutSuccess={onSuccess}
+        render={(renderProps) => (
+          <button
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}
+            style={{
+              background: "#DB4437",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: "bold",
+            }}
+          >
+            Logout
+          </button>
+        )}
       />
     </div>
   );
