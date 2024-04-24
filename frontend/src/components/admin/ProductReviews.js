@@ -1,13 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { MDBDataTable } from "mdbreact";
-
+import {  useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import Sidebar from "./Sidebar";
-
+import Loader from "../layout/Loader";
 import {  ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAdminProducts,
   getProductReviews,
   deleteReview,
   clearErrors,
@@ -16,13 +17,97 @@ import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
 
 const ProductReviews = () => {
   const [productId, setProductId] = useState("");
+  const history = useNavigate();
 
   const dispatch = useDispatch();
-
+  const { loading,  products } = useSelector((state) => state.products);
   const { error, reviews } = useSelector((state) => state.productReviews);
   const { isDeleted, error: deleteError } = useSelector(
     (state) => state.review
   );
+
+  useEffect(() => {
+    dispatch(getAdminProducts());
+
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
+
+      history("/admin/products");
+    
+    }
+  }, [dispatch, error, deleteError, isDeleted, history]);
+
+const setProducts = () => {
+    const data = {
+      columns: [
+        {
+          label: "ID",
+          field: "id",
+          sort: "asc",
+        },
+        {
+          label: "Name",
+          field: "name",
+          sort: "asc",
+        },
+        {
+          label: "Ratings",
+          field: "ratings",
+          sort: "asc",
+        },
+        { label: "Actions", 
+        field: "actions", 
+        sort: "asc" },
+       
+      ],
+      rows: [],
+    };
+
+    products.forEach((product) => {
+      data.rows.push({
+        id: product._id,
+        name: product.name,
+        ratings: product.ratings,
+        actions: (
+          <button
+            className="btn btn-primary py-1 px-2"
+            onClick={() => {
+              setProductId(product._id);  // Cập nhật productId và tải review
+              dispatch(getProductReviews(product._id));
+            }}
+          >
+            View Reviews
+          </button>
+        ),
+      });
+    });
+
+    return data;
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     if (error) {
@@ -168,6 +253,25 @@ const ProductReviews = () => {
                 </form>
               </div>
             </div>
+            <h1 className="centered-title">All Products</h1>
+
+              {loading ? (
+                <Loader />
+              ) : (
+                <MDBDataTable
+                  data={setProducts()}
+                  className="px-3"
+                  bordered
+                  striped
+                  hover
+                  noBottomColumns
+                />
+              )}
+            {productId && (
+            <h2 className="centered-title">
+              Đánh giá sản phẩm ID= <strong>{productId}</strong>
+            </h2>
+          )}
 
             {reviews && reviews.length > 0 ? (
               <MDBDataTable
@@ -178,7 +282,7 @@ const ProductReviews = () => {
                 hover
               />
             ) : (
-              <p className="mt-5 text-center">No Reviews.</p>
+              <p className="mt-5 text-center" style={{ fontSize: '24px' }}>No Reviews.</p>
             )}
           </Fragment>
         </div>

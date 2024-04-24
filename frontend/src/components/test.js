@@ -1,73 +1,190 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import MetaData from '../layout/MetaData';
-import Product from '../product/Product';
-import Loader from '../layout/Loader';
+import React, { Fragment, useState, useEffect } from "react";
+import { MDBDataTable } from "mdbreact";
 
-const Color = () => {
-  const { color: urlColor } = useParams(); // Lấy màu từ URL và đổi tên biến thành urlColor
-  const [selectedColor, setSelectedColor] = useState(urlColor || ""); // State để lưu màu được chọn
-  const colors = ["black", "white", "red", "blue", "green", "yellow", "orange", "purple", "pink", "gray"]; // Danh sách màu
-  const navigate = useNavigate();
-  const {
-    loading,
-    products: allProducts,
-    error,
-  } = useSelector(state => state.products);
+import MetaData from "../layout/MetaData";
+import Sidebar from "./Sidebar";
 
-  const [filteredProducts, setFilteredProducts] = useState([]);
+import {  ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProductReviews,
+  deleteReview,
+  clearErrors,
+} from "../../actions/productActions";
+import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
 
-  // Cập nhật danh sách sản phẩm khi màu được chọn thay đổi
+const ProductReviews = () => {
+  const [productId, setProductId] = useState("");
+
+  const dispatch = useDispatch();
+
+  const { error, reviews } = useSelector((state) => state.productReviews);
+  const { isDeleted, error: deleteError } = useSelector(
+    (state) => state.review
+  );
+
   useEffect(() => {
-    if (!loading && allProducts && selectedColor) {
-      const matchedProducts = allProducts.filter(product =>
-        product.colors && product.colors.colorName &&
-        product.colors.colorName.toLowerCase() === selectedColor.toLowerCase()
-      );
-      setFilteredProducts(matchedProducts);
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
     }
-  }, [allProducts, selectedColor, loading]);
 
-  // Cập nhật màu được chọn khi URL thay đổi
-  useEffect(() => {
-    if (urlColor && urlColor !== selectedColor) {
-      setSelectedColor(urlColor);
-      navigate(`/Shop/color/${urlColor}`);
+    if (deleteError) {
+      toast.error(deleteError, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
     }
-  }, [urlColor, navigate, selectedColor]);
 
-  // Xử lý khi màu được chọn thay đổi
-  const handleColorChange = (newColor) => {
-    setSelectedColor(newColor);
-    navigate(`/Shop/color/${newColor}`); // Đổi URL để phản ánh màu mới được chọn
+    if (productId !== "") {
+      dispatch(getProductReviews(productId));
+    }
+
+    if (isDeleted) {
+      toast.success("Review deleted successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch({ type: DELETE_REVIEW_RESET });
+    }
+  }, [dispatch, error, productId, isDeleted, deleteError]);
+
+  const deleteReviewHandler = (id) => {
+    dispatch(deleteReview(id, productId));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(getProductReviews(productId));
+  };
+
+  const setReviews = () => {
+    const data = {
+      columns: [
+        {
+          label: "Review ID",
+          field: "id",
+          sort: "asc",
+        },
+        {
+          label: "Rating",
+          field: "rating",
+          sort: "asc",
+        },
+        {
+          label: "Comment",
+          field: "comment",
+          sort: "asc",
+        },
+        {
+          label: "User",
+          field: "user",
+          sort: "asc",
+        },
+        {
+          label: "Actions",
+          field: "actions",
+        },
+      ],
+      rows: [],
+    };
+
+    reviews.forEach((review) => {
+      data.rows.push({
+        id: review._id,
+        rating: review.rating,
+        comment: review.comment,
+        user: review.name,
+
+        actions: (
+          <button
+            className="btn btn-danger py-1 px-2 ml-2"
+            onClick={() => deleteReviewHandler(review._id)}
+          >
+            <i className="fa fa-trash"></i>
+          </button>
+        ),
+      });
+    });
+
+    return data;
   };
 
   return (
     <Fragment>
-      <MetaData title={`Products in ${selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1)}`} />
-      <div className="container mt-5">
-        <select className="form-control mb-4" value={selectedColor} onChange={(e) => handleColorChange(e.target.value)}>
-          <option value="">Select a Color</option>
-          {colors.map(color => (
-            <option key={color} value={color}>{color.charAt(0).toUpperCase() + color.slice(1)}</option>
-          ))}
-        </select>
-        {loading ? (
-          <Loader />
-        ) : (
+      <ToastContainer/>
+      <MetaData title={"Product Reviews"} />
+      <div className="row">
+        <div className="col-12 col-md-2">
+          <Sidebar />
+        </div>
+
+        <div className="col-12 col-md-10">
           <Fragment>
-            <h1>Products in {selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1)}</h1>
-            <div className="row">
-              {filteredProducts.length > 0 ? filteredProducts.map(product => (
-                <Product key={product._id} product={product} />
-              )) : <p>No products found for this color.</p>}
+            <div className="row justify-content-center mt-5">
+              <div className="col-5">
+                <form onSubmit={submitHandler}>
+                  <div className="form-group">
+                    <label htmlFor="productId_field">Enter Product ID</label>
+                    <input
+                      type="text"
+                      id="productId_field"
+                      className="form-control"
+                      value={productId}
+                      onChange={(e) => setProductId(e.target.value)}
+                    />
+                  </div>
+
+                  <button
+                    id="search_button"
+                    type="submit"
+                    className="btn btn-primary btn-block py-2"
+                  >
+                    SEARCH
+                  </button>
+                </form>
+              </div>
             </div>
+
+            {reviews && reviews.length > 0 ? (
+              <MDBDataTable
+                data={setReviews()}
+                className="px-3"
+                bordered
+                striped
+                hover
+              />
+            ) : (
+              <p className="mt-5 text-center">No Reviews.</p>
+            )}
           </Fragment>
-        )}
+        </div>
       </div>
     </Fragment>
   );
 };
 
-export default Color;
+export default ProductReviews;

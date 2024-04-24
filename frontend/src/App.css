@@ -260,21 +260,21 @@ footer {
 /* Product Details Page */
 .product-thumbnails {
   margin-right: 0px;
-
   margin-top: 5rem;
   display: flex;
   flex-direction: column; /* Sắp xếp các ảnh theo chiều dọc */
   align-items: flex-start; /* Căn chỉnh các ảnh về phía lề trái */
   gap: 10px; /* Khoảng cách giữa các ảnh */
-  margin-left: 10px; /* Khoảng cách với lề bên trái */
+  margin-left: 0px; /* Khoảng cách với lề bên trái */
   /* Có thể thêm padding nếu cần */
 }
 
 .product-thumbnail {
+ 
   width: 100px; /* Điều chỉnh chiều rộng của ảnh */
   height: 100px; /* Điều chỉnh chiều cao của ảnh */
   object-fit: cover; /* Đảm bảo ảnh che đầy không làm méo ảnh */
-  margin-left: -120px;
+  margin-left: -140px;
   cursor: pointer;
   opacity: 0.6;
   transition: opacity 0.2s ease-in-out;
@@ -739,6 +739,18 @@ footer {
   background-color: #fa9c23;
   border-color: #fa9c23;
 }
+/*review*/
+
+.centered-title {
+  text-align: center;
+  font-size: 28px; /* Kích thước font */
+  font-family: Arial, sans-serif; /* Kiểu chữ */
+  font-weight: bold; /* Độ đậm */
+  color: #333; /* Màu chữ */
+  margin-top: 20px; /* Khoảng cách phía trên */
+  margin-bottom: 20px; /* Khoảng cách phía dưới */
+}
+
 
 /* Confirm Order */
 .progress-step {

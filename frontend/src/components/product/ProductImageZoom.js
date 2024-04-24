@@ -21,8 +21,10 @@ const ProductImageZoom = ({ image }) => {
     // Prevent the lens from being positioned outside the image
     const lensLeft = Math.max(0, Math.min(lensX, width - lens.offsetWidth));
     const lensTop = Math.max(0, Math.min(lensY, height - lens.offsetHeight));
+    
     lens.style.left = lensLeft + 'px';
     lens.style.top = lensTop + 'px';
+    
 
     // Calculate the ratio of the result div to the lens
     const ratio = result.offsetWidth / lens.offsetWidth;
@@ -44,12 +46,13 @@ const ProductImageZoom = ({ image }) => {
         ref={imageRef}
         src={image} 
         alt="Zoomed Product" 
-        style={{ 
-           
+        style={{
+            top:'5px',
             width: '400px',
             height: '500px',  
             display: 'block',
-            margin: '0 auto', 
+            marginBottom:'15px',
+             
         }}
     />
     <div
@@ -57,8 +60,8 @@ const ProductImageZoom = ({ image }) => {
         style={{
             position: 'absolute',
             border: '1px solid #d4d4d4',
-            width: '100px',
-            height: '100px',
+            width: '110px',
+            height: '110px',
             display: zooming ? 'block' : 'none',
             cursor: 'none',
             
@@ -71,8 +74,8 @@ const ProductImageZoom = ({ image }) => {
             marginLeft:"50px",
             position: 'absolute',
             border: '1px solid #d4d4d4',
-            width: '300px', // Kích thước của phần hiển thị kết quả zoom
-            height: '400px', // Kích thước của phần hiển thị kết quả zoom
+            width: '450px', // Kích thước của phần hiển thị kết quả zoom
+            height: '600px', // Kích thước của phần hiển thị kết quả zoom
             overflow: 'hidden',
             left: '100%', // Đặt bên phải ảnh
             top: 0,
