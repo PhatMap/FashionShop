@@ -1,16 +1,22 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import MetaData from "../layout/MetaData";
 import CheckoutSteps from "./CheckoutSteps";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder } from "../../actions/orderActions";
+import { createOrder, clearErrors } from "../../actions/orderActions";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 
 const ConfirmOrder = () => {
   const history = useNavigate();
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const { error } = useSelector(state => state.newOrder);
 
   // Calculate Order Prices
   const itemsPrice = cartItems.reduce(
@@ -61,11 +67,27 @@ const ConfirmOrder = () => {
 
     history("/success");
   };
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(clearErrors());
+    }
+  });
+  
 
   return (
     <Fragment>
       <MetaData title={"Confirm Order"} />
-
+      <ToastContainer />
       <CheckoutSteps shipping confirmOrder />
 
       <div className="row d-flex justify-content-between">

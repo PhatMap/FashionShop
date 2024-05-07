@@ -101,6 +101,14 @@ nav {
   font-weight: bold;
   font-size: 0.9rem;
 }
+.disabled {
+  opacity: 0.5; 
+  cursor: not-allowed;
+  pointer-events: none; 
+}
+
+
+
 
 /* Home page */
 #products_heading {

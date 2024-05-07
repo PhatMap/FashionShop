@@ -90,7 +90,7 @@ const Cart = () => {
                         <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                           <div className="stockCounter d-inline">
                             <span
-                              className="btn btn-danger minus"
+                              className={`btn btn-danger minus ${item.quantity <= 1 ? 'disabled' : ''}`} // Thêm class disabled nếu số lượng là 1 hoặc nhỏ hơn
                               onClick={() =>
                                 decreaseQty(
                                   index,
@@ -100,6 +100,7 @@ const Cart = () => {
                                   item.color.colorHex
                                 )
                               }
+                              disabled={item.quantity <= 1} // Vô hiệu hóa nút khi số lượng là 1 hoặc nhỏ hơn
                             >
                               -
                             </span>

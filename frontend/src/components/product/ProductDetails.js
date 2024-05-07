@@ -19,7 +19,6 @@ import ProductImageZoom from "./ProductImageZoom"; // Đường dẫn phải ch�
 
 const ProductDetails = () => {
   const { id } = useParams();
-
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
